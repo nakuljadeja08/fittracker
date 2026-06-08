@@ -1,0 +1,10 @@
+{
+  "name": "Saiyan Fit",
+  "short_name": "Saiyan Fit",
+  "description": "Personal fitness tracker",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0010",
+  "theme_color": "#0d0010",
+  "icons": []
+}

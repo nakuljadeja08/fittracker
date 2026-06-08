@@ -12,61 +12,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0d0010;
-  --bg2:#130018;
-  --surface:#1a0022;
-  --surface2:#220030;
-  --surface3:#2d003f;
-  --gold:#f5c518;
-  --gold-dim:#c49a10;
-  --gold-dark:#2a1f00;
-  --purple:#8b00ff;
-  --purple-dim:#6200b3;
-  --purple-light:#c084fc;
-  --purple-glow:#4a0080;
-  --blue:#00aaff;
-  --text:#f0e6ff;
-  --text-muted:#9b7bb8;
-  --text-dim:#5a3f70;
-  --border:#3d0055;
-  --radius:14px;
-  --radius-sm:8px;
+  --bg:#0d0010;--bg2:#130018;--surface:#1a0022;--surface2:#220030;--surface3:#2d003f;
+  --gold:#f5c518;--gold-dim:#c49a10;--gold-dark:#2a1f00;
+  --purple:#8b00ff;--purple-dim:#6200b3;--purple-light:#c084fc;--purple-glow:#4a0080;
+  --blue:#00aaff;--red:#ff3355;
+  --text:#f0e6ff;--text-muted:#9b7bb8;--text-dim:#5a3f70;
+  --border:#3d0055;--radius:14px;--radius-sm:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden}
 .app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:430px;margin:0 auto;position:relative}
-
-/* ANIMATED BG */
 .bg-aura{position:fixed;top:0;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;pointer-events:none;z-index:0;overflow:hidden}
 .bg-aura::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 20%,rgba(139,0,255,0.15) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(245,197,24,0.08) 0%,transparent 50%);animation:aura 4s ease-in-out infinite alternate}
 @keyframes aura{0%{opacity:0.6;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
-
-/* LIGHTNING */
 .lightning{position:fixed;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,transparent 0%,var(--gold) 20%,transparent 40%,var(--purple) 60%,transparent 80%);opacity:0.3;animation:lightning 2s ease-in-out infinite;pointer-events:none;z-index:0}
-@keyframes lightning{0%,100%{opacity:0.1;transform:scaleY(0.8)}50%{opacity:0.4;transform:scaleY(1)}}
-
-/* NAV */
+@keyframes lightning{0%,100%{opacity:0.1}50%{opacity:0.4}}
 .nav{display:flex;background:var(--surface);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));flex-shrink:0;position:relative;z-index:10}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--text-dim);cursor:pointer;padding:6px 4px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;transition:color 0.2s;letter-spacing:0.05em}
 .nav-btn.active{color:var(--gold)}
 .nav-btn svg{width:22px;height:22px;stroke-width:1.8}
-
-/* SCREENS */
 .screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:env(safe-area-inset-top,20px) 16px 16px;display:none;position:relative;z-index:1;scrollbar-width:none}
 .screen::-webkit-scrollbar{display:none}
 .screen.active{display:block}
-
-/* HEADER */
 .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-top:8px}
-.header-title{font-family:'Bangers',cursive;font-size:36px;line-height:1;letter-spacing:2px;background:linear-gradient(135deg,var(--gold) 0%,#fff176 50%,var(--gold-dim) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 0 8px rgba(245,197,24,0.4))}
-.header-sub{font-size:12px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace;letter-spacing:0.05em}
-.power-chip{background:linear-gradient(135deg,var(--gold-dark),var(--surface3));border:1px solid var(--gold-dim);border-radius:999px;padding:6px 14px;font-family:'Bangers',cursive;font-size:16px;color:var(--gold);letter-spacing:1px;filter:drop-shadow(0 0 6px rgba(245,197,24,0.3))}
-
-/* BANNER */
+.header-title{font-family:'Bangers',cursive;font-size:36px;line-height:1;letter-spacing:2px;background:linear-gradient(135deg,var(--gold) 0%,#fff176 50%,var(--gold-dim) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 8px rgba(245,197,24,0.4))}
+.header-sub{font-size:12px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace}
+.power-chip{background:linear-gradient(135deg,var(--gold-dark),var(--surface3));border:1px solid var(--gold-dim);border-radius:999px;padding:6px 14px;font-family:'Bangers',cursive;font-size:16px;color:var(--gold);letter-spacing:1px}
 .banner{background:linear-gradient(135deg,var(--surface2),var(--purple-glow));border:1px solid var(--purple-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--purple-light);position:relative;overflow:hidden}
 .banner::before{content:'⚡';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:28px;opacity:0.3}
-
-/* STAT CARDS */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .stat-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:14px;position:relative;overflow:hidden}
 .stat-card::after{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--purple-dim)}
@@ -76,8 +49,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Rajdha
 .stat-card.accent{background:linear-gradient(135deg,var(--gold-dark),#1a1200);border-color:var(--gold-dim)}
 .stat-card.accent::after{background:var(--gold)}
 .stat-card.accent .stat-val{color:var(--gold)}
-
-/* LOG */
+.stat-card.danger{background:linear-gradient(135deg,#1a0008,#0d0010);border-color:#550022}
+.stat-card.danger::after{background:var(--red)}
+.stat-card.danger .stat-val{color:var(--red)}
+.vegeta-panel{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;border:1px solid var(--purple-dim);background:linear-gradient(135deg,var(--bg2),var(--purple-glow))}
+.vegeta-quote{padding:16px 16px 0;font-family:'Bangers',cursive;font-size:22px;letter-spacing:1.5px;line-height:1.3;color:var(--gold);filter:drop-shadow(0 0 8px rgba(245,197,24,0.5))}
+.vegeta-sub{padding:4px 16px 0;font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--purple-light);font-weight:500}
+.power-bar-label{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;text-transform:uppercase;margin-bottom:6px;margin-top:12px}
+.power-level{background:var(--bg2);border-radius:999px;height:10px;overflow:hidden;border:1px solid var(--border)}
+.power-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);position:relative}
+.power-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:#fff;border-radius:999px;opacity:0.8;animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
 .log-section{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;position:relative;overflow:hidden}
 .log-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--gold),var(--purple))}
 .log-title{font-family:'Bangers',cursive;font-size:20px;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--gold)}
@@ -87,41 +69,27 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Rajdha
 .log-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:16px;font-family:'Rajdhani',sans-serif;outline:none;-webkit-appearance:none}
 .log-input:focus{border-color:var(--gold-dim);box-shadow:0 0 8px rgba(245,197,24,0.2)}
 .log-unit{font-size:12px;color:var(--text-dim);width:40px;text-align:right;font-family:'Space Mono',monospace}
-.save-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:var(--radius-sm);padding:14px;font-size:16px;font-weight:700;font-family:'Bangers',cursive;cursor:pointer;margin-top:14px;letter-spacing:2px;transition:opacity 0.2s;position:relative;overflow:hidden}
+.save-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:var(--radius-sm);padding:14px;font-size:16px;font-weight:700;font-family:'Bangers',cursive;cursor:pointer;margin-top:14px;letter-spacing:2px;transition:opacity 0.2s}
 .save-btn:active{opacity:0.8}
-
-/* HISTORY */
-.history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
+.save-btn:disabled{opacity:0.5;cursor:not-allowed}
+.history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
 .history-row:last-child{border-bottom:none}
 .history-date{color:var(--text-muted);font-family:'Space Mono',monospace;font-size:11px}
 .history-stats{display:flex;gap:14px}
 .history-stat{text-align:right}
 .history-stat-val{font-weight:700;font-size:14px;color:var(--gold)}
 .history-stat-label{font-size:10px;color:var(--text-dim)}
-
-/* STREAK */
 .streak-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:20px}
-.streak-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Bangers',cursive;letter-spacing:0.5px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);transition:all 0.15s;user-select:none}
+.streak-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Bangers',cursive;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);transition:all 0.15s;user-select:none;position:relative}
 .streak-cell.done{background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-color:var(--gold);color:#000;box-shadow:0 0 10px rgba(245,197,24,0.4)}
+.streak-cell.skipped{background:linear-gradient(135deg,#1a0008,#0d0010);border-color:#550022;color:var(--red)}
 .streak-cell.today-cell{border-color:var(--purple);color:var(--purple-light);box-shadow:0 0 8px rgba(139,0,255,0.4)}
 .streak-cell:active{transform:scale(0.92)}
-
-/* VEGETA PANEL */
-.vegeta-panel{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;border:1px solid var(--purple-dim);background:linear-gradient(135deg,var(--bg2),var(--purple-glow))}
-.vegeta-quote{padding:16px;font-family:'Bangers',cursive;font-size:22px;letter-spacing:1.5px;line-height:1.3;color:var(--gold);filter:drop-shadow(0 0 8px rgba(245,197,24,0.5));position:relative;z-index:2}
-.vegeta-sub{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--purple-light);font-weight:500;margin-top:4px}
-.power-bar-label{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;margin-top:4px}
-
-/* POWER LEVEL */
-.power-level{background:var(--bg2);border-radius:999px;height:10px;overflow:hidden;margin-bottom:4px;border:1px solid var(--border)}
-.power-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);position:relative}
-.power-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:#fff;border-radius:999px;opacity:0.8;animation:pulse 1s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
-
-/* PROGRAM */
+.streak-legend{display:flex;gap:16px;margin-bottom:16px;font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace}
+.legend-dot{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:middle}
 .day-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .day-tabs::-webkit-scrollbar{display:none}
-.day-tab{flex-shrink:0;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;font-family:'Rajdhani',sans-serif;transition:all 0.15s;letter-spacing:0.5px}
+.day-tab{flex-shrink:0;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;font-family:'Rajdhani',sans-serif;transition:all 0.15s}
 .day-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border-color:var(--gold);font-family:'Bangers',cursive;font-size:15px;letter-spacing:1px}
 .block-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
 .block-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--gold),var(--purple))}
@@ -129,22 +97,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Rajdha
 .block-name{font-family:'Bangers',cursive;font-size:16px;color:var(--gold);letter-spacing:1px}
 .block-rest{font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace}
 .ex-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0 8px 8px;border-top:1px solid var(--border)}
-.ex-name{font-size:13px;font-weight:600;flex:1;padding-right:8px;line-height:1.4;color:var(--text)}
+.ex-name{font-size:13px;font-weight:600;flex:1;padding-right:8px;line-height:1.4}
 .ex-sets{font-size:11px;color:var(--gold-dim);font-family:'Space Mono',monospace;text-align:right;flex-shrink:0;line-height:1.4}
-
-/* NUTRITION */
 .rule-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden}
 .rule-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--gold))}
 .rule-card.forbidden::before{background:linear-gradient(90deg,#ff2244,#660011)}
 .rule-card.forbidden{border-color:#440011}
-.rule-card.mandatory::before{background:linear-gradient(90deg,var(--gold),var(--purple))}
 .rule-card.mandatory{border-color:var(--gold-dark)}
-.rule-header{font-family:'Bangers',cursive;font-size:17px;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.rule-header{font-family:'Bangers',cursive;font-size:17px;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
 .rule-time{font-family:'Space Mono',monospace;font-size:11px;color:#000;background:var(--gold);padding:2px 8px;border-radius:999px;font-weight:700}
 .rule-time.red{color:#fff;background:#880022}
 .rule-body{font-size:13px;color:var(--text-muted);line-height:1.6;font-weight:500}
-
-/* CHECKLIST */
 .check-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
 .check-item:last-child{border-bottom:none}
 .check-box{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:var(--surface)}
@@ -154,511 +117,564 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Rajdha
 .progress-wrap{background:var(--surface2);border-radius:999px;height:8px;margin:16px 0 8px;overflow:hidden;border:1px solid var(--border)}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));border-radius:999px;transition:width 0.4s cubic-bezier(0.34,1.56,0.64,1)}
 .prog-info{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-bottom:16px}
-
-/* TOAST */
 .toast{position:fixed;top:env(safe-area-inset-top,20px);left:50%;transform:translateX(-50%) translateY(-120px);background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border-radius:var(--radius);padding:12px 20px;font-size:15px;font-weight:700;font-family:'Bangers',cursive;letter-spacing:1.5px;z-index:999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);max-width:360px;width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
-
-/* SECTION LABEL */
+.toast.error{background:linear-gradient(135deg,var(--red),#aa0022);color:#fff}
 .section-label{font-family:'Bangers',cursive;font-size:14px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
 .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
-
-/* WEEK ROW */
-.week-label-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:6px}
-.week-label{text-align:center;font-size:10px;color:var(--text-dim);font-family:'Space Mono',monospace}
-
-/* DRAGON BALLS ROW */
 .dragonballs{display:flex;gap:8px;justify-content:center;margin:12px 0;font-size:22px;filter:drop-shadow(0 0 6px rgba(245,197,24,0.5))}
-
-/* CARDIO REMINDER CARD */
 .cardio-reminder{background:linear-gradient(135deg,#001a33,#000d1a);border:1px solid #003366;border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-size:13px;color:#80ccff;line-height:1.6}
 .cardio-reminder strong{color:var(--blue);font-family:'Bangers',cursive;font-size:16px;letter-spacing:1px}
+.sync-status{display:flex;align-items:center;gap:6px;font-size:11px;font-family:'Space Mono',monospace;color:var(--text-dim);margin-bottom:12px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);flex-shrink:0}
+.sync-dot.online{background:#44ff88;box-shadow:0 0 6px #44ff88}
+.sync-dot.syncing{background:var(--gold);animation:pulse 0.8s infinite}
+.sync-dot.error{background:var(--red)}
+.week-label-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:6px}
+.week-label{text-align:center;font-size:10px;color:var(--text-dim);font-family:'Space Mono',monospace}
+/* WORKOUT LOG TABLE */
+.wlog-table{width:100%;border-collapse:collapse;font-size:13px}
+.wlog-table th{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--border);text-align:left}
+.wlog-table td{padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.wlog-table tr:last-child td{border-bottom:none}
+.badge-done{background:var(--gold-dark);color:var(--gold);border:1px solid var(--gold-dim);border-radius:999px;padding:2px 10px;font-size:11px;font-family:'Bangers',cursive;letter-spacing:0.5px}
+.badge-skip{background:#1a0008;color:var(--red);border:1px solid #550022;border-radius:999px;padding:2px 10px;font-size:11px;font-family:'Bangers',cursive;letter-spacing:0.5px}
+.badge-pending{background:var(--surface2);color:var(--text-dim);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:11px;font-family:'Space Mono',monospace}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <div class="bg-aura"></div>
 <div class="lightning"></div>
-
 <div class="app">
-  <div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div>
 
-  <!-- HOME -->
-  <div class="screen active" id="screen-home">
-    <div class="header">
-      <div>
-        <div class="header-title">SAIYAN FIT</div>
-        <div class="header-sub" id="todayDate"></div>
-      </div>
-      <div class="power-chip" id="dayChip">DAY 8 NEXT</div>
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="header">
+    <div>
+      <div class="header-title">SAIYAN FIT</div>
+      <div class="header-sub" id="todayDate"></div>
     </div>
-
-    <div class="vegeta-panel">
-      <div class="vegeta-quote" id="motivQuote">PUSH PAST YOUR LIMITS!</div>
-      <div class="vegeta-sub" id="motivSub">— Vegeta, Prince of all Saiyans</div>
-      <div style="padding:0 16px 16px">
-        <div class="power-bar-label">Program power level — <span id="powerPct">29</span>%</div>
-        <div class="power-level"><div class="power-fill" id="powerBar" style="width:29%"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:4px"><span>Day 1</span><span id="doneLabel">7 / 24 sessions</span></div>
-      </div>
-    </div>
-
-    <div class="banner" id="reminderBanner"></div>
-
-    <div class="stat-grid">
-      <div class="stat-card accent">
-        <div class="stat-label">Steps today</div>
-        <div class="stat-val" id="todaySteps">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Cal burned</div>
-        <div class="stat-val" id="todayCals">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Cardio</div>
-        <div class="stat-val" id="todayCardio">—<span class="stat-unit"> min</span></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Sessions done</div>
-        <div class="stat-val" id="sessionsDone">7</div>
-      </div>
-    </div>
-
-    <div class="section-label">End of Day Log</div>
-    <div class="log-section">
-      <div class="log-title">⚡ LOG YOUR POWER</div>
-      <div class="log-row">
-        <span class="log-label">Steps</span>
-        <input type="number" class="log-input" id="inputSteps" placeholder="0" inputmode="numeric">
-        <span class="log-unit">steps</span>
-      </div>
-      <div class="log-row">
-        <span class="log-label">Cal burned</span>
-        <input type="number" class="log-input" id="inputCals" placeholder="0" inputmode="numeric">
-        <span class="log-unit">kcal</span>
-      </div>
-      <div class="log-row">
-        <span class="log-label">Cardio</span>
-        <input type="number" class="log-input" id="inputCardio" placeholder="0" inputmode="numeric">
-        <span class="log-unit">min</span>
-      </div>
-      <button class="save-btn" onclick="saveLog()">POWER UP — SAVE DAY →</button>
-    </div>
-
-    <div class="section-label">Battle History</div>
-    <div class="log-section" style="padding:4px 16px">
-      <div id="historyList"><div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No entries yet. Log your first day.</div></div>
+    <div class="power-chip" id="dayChip">DAY 8 NEXT</div>
+  </div>
+  <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncLabel">Connecting to Supabase...</span></div>
+  <div class="vegeta-panel">
+    <div class="vegeta-quote" id="motivQuote">PUSH PAST YOUR LIMITS!</div>
+    <div class="vegeta-sub" id="motivSub">— Vegeta, Prince of all Saiyans</div>
+    <div style="padding:0 16px 16px">
+      <div class="power-bar-label">Program power level — <span id="powerPct">0</span>%</div>
+      <div class="power-level"><div class="power-fill" id="powerBar" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:4px"><span>Day 1</span><span id="doneLabel">— / 24 sessions</span></div>
     </div>
   </div>
-
-  <!-- STREAK -->
-  <div class="screen" id="screen-streak">
-    <div class="header">
-      <div>
-        <div class="header-title">STREAK</div>
-        <div class="header-sub">PPSA — 24 SESSION CAMPAIGN</div>
-      </div>
-    </div>
-
-    <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
-      <div class="stat-card accent">
-        <div class="stat-label">Conquered</div>
-        <div class="stat-val" id="doneCount">7</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Remaining</div>
-        <div class="stat-val" id="remainCount">17</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Power</div>
-        <div class="stat-val" id="progPct">29<span class="stat-unit">%</span></div>
-      </div>
-    </div>
-
-    <div class="power-level" style="margin-bottom:20px">
-      <div class="power-fill" id="mainProgressBar" style="width:29%"></div>
-    </div>
-
-    <div class="dragonballs" id="dragonBalls"></div>
-
-    <div class="section-label">Tap session to mark complete</div>
-    <div class="week-label-row">
-      <div class="week-label">W1</div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div>
-    </div>
-    <div class="streak-grid" id="streakGrid"></div>
-
-    <div class="log-section" style="margin-top:8px">
-      <div class="log-title">⚡ MARK SESSION DONE</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6;font-weight:500">You're on Day 8 next. Tap a cell above or hit the button below after completing your session.</div>
-      <button class="save-btn" onclick="markNextSession()">COMPLETE NEXT SESSION →</button>
-    </div>
+  <div class="banner" id="reminderBanner"></div>
+  <div class="stat-grid">
+    <div class="stat-card accent"><div class="stat-label">Steps today</div><div class="stat-val" id="todaySteps">—</div></div>
+    <div class="stat-card"><div class="stat-label">Cal burned</div><div class="stat-val" id="todayCals">—</div></div>
+    <div class="stat-card"><div class="stat-label">Cardio</div><div class="stat-val" id="todayCardio">—<span class="stat-unit"> min</span></div></div>
+    <div class="stat-card"><div class="stat-label">Sessions done</div><div class="stat-val" id="sessionsDone">—</div></div>
   </div>
-
-  <!-- PROGRAM -->
-  <div class="screen" id="screen-program">
-    <div class="header">
-      <div>
-        <div class="header-title">PROGRAM</div>
-        <div class="header-sub">PPSA — STACKED, JACKED & TURNING HEADS II</div>
-      </div>
-    </div>
-    <div class="day-tabs" id="dayTabs"></div>
-    <div id="programContent"></div>
+  <div class="section-label">End of Day Log</div>
+  <div class="log-section">
+    <div class="log-title">⚡ LOG YOUR POWER</div>
+    <div class="log-row"><span class="log-label">Steps</span><input type="number" class="log-input" id="inputSteps" placeholder="0" inputmode="numeric"><span class="log-unit">steps</span></div>
+    <div class="log-row"><span class="log-label">Cal burned</span><input type="number" class="log-input" id="inputCals" placeholder="0" inputmode="numeric"><span class="log-unit">kcal</span></div>
+    <div class="log-row"><span class="log-label">Cardio</span><input type="number" class="log-input" id="inputCardio" placeholder="0" inputmode="numeric"><span class="log-unit">min</span></div>
+    <button class="save-btn" id="saveLogBtn" onclick="saveLog()">POWER UP — SAVE DAY →</button>
   </div>
+  <div class="section-label">Battle History</div>
+  <div class="log-section" style="padding:4px 16px"><div id="historyList"><div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px"><span class="spinner"></span></div></div></div>
+</div>
 
-  <!-- NUTRITION -->
-  <div class="screen" id="screen-nutrition">
-    <div class="header">
-      <div>
-        <div class="header-title">NUTRITION</div>
-        <div class="header-sub">SAIYAN FEEDING PROTOCOL</div>
-      </div>
-    </div>
-
-    <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">7–9am</span> MEAL 1 — BREAKFAST</div>
-      <div class="rule-body">4–6 eggs or 1 cup Greek yogurt + fruit. High protein start. Skip it and your body stores fat all day. Non-negotiable.</div>
-    </div>
-    <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">12–1pm</span> MEAL 2 — LUNCH</div>
-      <div class="rule-body">6–8oz chicken or fish + rice or sweet potato + vegetables. Your biggest meal. Carbs here — not at night.</div>
-    </div>
-    <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">5–7pm</span> MEAL 3 — DINNER</div>
-      <div class="rule-body">6oz protein + vegetables only. No rice, no bread, no pasta. Low carb. Done by 7pm maximum.</div>
-    </div>
-    <div class="rule-card forbidden">
-      <div class="rule-header"><span class="rule-time red">8pm CUTOFF</span> KITCHEN CLOSED</div>
-      <div class="rule-body">Water and black coffee only. Zero exceptions. Late eating spikes insulin overnight — that's exactly where your side fat comes from.</div>
-    </div>
-
-    <div class="section-label">Daily Protein Target</div>
-    <div class="stat-card accent" style="margin-bottom:16px">
-      <div class="stat-label">1g per lb bodyweight — every single day</div>
-      <div class="stat-val" style="color:var(--gold)">162<span class="stat-unit">g protein / day</span></div>
-    </div>
-
-    <div class="section-label">Forbidden Foods</div>
-    <div class="rule-card forbidden">
-      <div class="rule-header"><span class="rule-time red">BANNED</span> LIQUID CALORIES</div>
-      <div class="rule-body">Juice, soda, alcohol, flavored coffees. Water, black coffee, green tea only.</div>
-    </div>
-    <div class="rule-card forbidden">
-      <div class="rule-header"><span class="rule-time red">BANNED</span> CARBS AFTER 5PM</div>
-      <div class="rule-body">White rice, bread, pasta. All carbs in meal 1 and 2 only.</div>
-    </div>
-
-    <div class="section-label">Cardio Protocol</div>
-    <div class="cardio-reminder">
-      <strong>POST-LIFT INCLINE WALK</strong><br>
-      20 min · 15% incline · 2.5–3 mph · Every session · No skipping.
-    </div>
-    <div class="cardio-reminder">
-      <strong>WEEKLY FASTED WALK</strong><br>
-      Saturday or Sunday morning — before eating. 30 min easy walk. Targets stubborn oblique fat directly.
-    </div>
+<!-- STREAK -->
+<div class="screen" id="screen-streak">
+  <div class="header">
+    <div><div class="header-title">STREAK</div><div class="header-sub">PPSA — 24 SESSION CAMPAIGN</div></div>
   </div>
-
-  <!-- CHECKLIST -->
-  <div class="screen" id="screen-checklist">
-    <div class="header">
-      <div>
-        <div class="header-title">DAILY CHECK</div>
-        <div class="header-sub" id="checkDate"></div>
-      </div>
-    </div>
-    <div class="progress-wrap">
-      <div class="progress-fill" id="checkProgress" style="width:0%"></div>
-    </div>
-    <div class="prog-info">
-      <span id="checkCount">0 / 9</span>
-      <span id="checkPct">0%</span>
-    </div>
-    <div id="checkList"></div>
-    <div id="checkMsg" style="margin-top:16px;font-size:14px;line-height:1.6;color:var(--text-muted);font-weight:600;font-family:'Bangers',cursive;letter-spacing:1px;font-size:18px;min-height:40px"></div>
+  <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="stat-card accent"><div class="stat-label">Conquered</div><div class="stat-val" id="doneCount">—</div></div>
+    <div class="stat-card danger"><div class="stat-label">Skipped</div><div class="stat-val" id="skipCount">—</div></div>
+    <div class="stat-card"><div class="stat-label">Power</div><div class="stat-val" id="progPct">—</div></div>
   </div>
+  <div class="power-level" style="margin-bottom:16px"><div class="power-fill" id="mainProgressBar" style="width:0%"></div></div>
+  <div class="dragonballs" id="dragonBalls"></div>
+  <div class="streak-legend">
+    <span><span class="legend-dot" style="background:var(--gold)"></span>Done</span>
+    <span><span class="legend-dot" style="background:var(--red);opacity:0.7"></span>Skipped</span>
+    <span><span class="legend-dot" style="background:var(--surface);border:1px solid var(--border)"></span>Pending</span>
+  </div>
+  <div class="section-label">Tap to toggle — hold to mark skipped</div>
+  <div class="week-label-row"><div class="week-label">W1</div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div></div>
+  <div class="streak-grid" id="streakGrid"></div>
+  <div class="log-section" style="margin-top:8px">
+    <div class="log-title">⚡ MARK SESSION</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6;font-weight:500">Tap a cell to mark done. Long-press to mark as skipped. Or use the button below.</div>
+    <button class="save-btn" onclick="markNextSession()">COMPLETE NEXT SESSION →</button>
+  </div>
+  <div class="section-label">Full Workout Log</div>
+  <div class="log-section" style="padding:4px 8px;overflow-x:auto">
+    <div id="workoutLogTable"><div style="padding:16px;text-align:center;color:var(--text-dim);font-size:13px"><span class="spinner"></span></div></div>
+  </div>
+</div>
 
-  <!-- NAV -->
-  <nav class="nav">
-    <button class="nav-btn active" onclick="showScreen('home',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      HOME
-    </button>
-    <button class="nav-btn" onclick="showScreen('streak',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      STREAK
-    </button>
-    <button class="nav-btn" onclick="showScreen('program',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      PROGRAM
-    </button>
-    <button class="nav-btn" onclick="showScreen('nutrition',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-      FUEL
-    </button>
-    <button class="nav-btn" onclick="showScreen('checklist',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      BATTLE
-    </button>
-  </nav>
+<!-- PROGRAM -->
+<div class="screen" id="screen-program">
+  <div class="header"><div><div class="header-title">PROGRAM</div><div class="header-sub">PPSA — STACKED, JACKED & TURNING HEADS II</div></div></div>
+  <div class="day-tabs" id="dayTabs"></div>
+  <div id="programContent"></div>
+</div>
+
+<!-- NUTRITION -->
+<div class="screen" id="screen-nutrition">
+  <div class="header"><div><div class="header-title">NUTRITION</div><div class="header-sub">SAIYAN FEEDING PROTOCOL</div></div></div>
+  <div class="rule-card mandatory"><div class="rule-header"><span class="rule-time">7–9am</span> MEAL 1 — BREAKFAST</div><div class="rule-body">4–6 eggs or 1 cup Greek yogurt + fruit. Skip it and your body stores fat all day. Non-negotiable.</div></div>
+  <div class="rule-card mandatory"><div class="rule-header"><span class="rule-time">12–1pm</span> MEAL 2 — LUNCH</div><div class="rule-body">6–8oz chicken or fish + rice or sweet potato + vegetables. Your biggest meal. Carbs here — not at night.</div></div>
+  <div class="rule-card mandatory"><div class="rule-header"><span class="rule-time">5–7pm</span> MEAL 3 — DINNER</div><div class="rule-body">6oz protein + vegetables only. No rice, no bread. Low carb. Done by 7pm maximum.</div></div>
+  <div class="rule-card forbidden"><div class="rule-header"><span class="rule-time red">8pm CUTOFF</span> KITCHEN CLOSED</div><div class="rule-body">Water and black coffee only. Zero exceptions. Late eating spikes insulin overnight — that's where your side fat comes from.</div></div>
+  <div class="section-label">Daily Protein Target</div>
+  <div class="stat-card accent" style="margin-bottom:16px"><div class="stat-label">1g per lb bodyweight — every single day</div><div class="stat-val" style="color:var(--gold)">162<span class="stat-unit">g protein / day</span></div></div>
+  <div class="section-label">Forbidden Foods</div>
+  <div class="rule-card forbidden"><div class="rule-header"><span class="rule-time red">BANNED</span> LIQUID CALORIES</div><div class="rule-body">Juice, soda, alcohol, flavored coffees. Water, black coffee, green tea only.</div></div>
+  <div class="rule-card forbidden"><div class="rule-header"><span class="rule-time red">BANNED</span> CARBS AFTER 5PM</div><div class="rule-body">White rice, bread, pasta. All carbs in meal 1 and 2 only.</div></div>
+  <div class="section-label">Cardio Protocol</div>
+  <div class="cardio-reminder"><strong>POST-LIFT: INCLINE WALK</strong><br>20 min · 15% incline · 2.5–3 mph · Every session · No skipping.</div>
+  <div class="cardio-reminder"><strong>WEEKLY FASTED WALK</strong><br>Saturday or Sunday morning — before eating. 30 min easy walk. Targets stubborn oblique fat.</div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="screen" id="screen-checklist">
+  <div class="header"><div><div class="header-title">DAILY CHECK</div><div class="header-sub" id="checkDate"></div></div></div>
+  <div class="progress-wrap"><div class="progress-fill" id="checkProgress" style="width:0%"></div></div>
+  <div class="prog-info"><span id="checkCount">0 / 9</span><span id="checkPct">0%</span></div>
+  <div id="checkList"></div>
+  <div id="checkMsg" style="margin-top:16px;font-family:'Bangers',cursive;font-size:18px;letter-spacing:1px;min-height:40px;color:var(--text-muted)"></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showScreen('home',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>HOME</button>
+  <button class="nav-btn" onclick="showScreen('streak',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>STREAK</button>
+  <button class="nav-btn" onclick="showScreen('program',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>PROGRAM</button>
+  <button class="nav-btn" onclick="showScreen('nutrition',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>FUEL</button>
+  <button class="nav-btn" onclick="showScreen('checklist',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>BATTLE</button>
+</nav>
 </div>
 
 <script>
-const DAYS_DATA=[
-  {name:"Day 1",day:"Mon",blocks:[
-    {name:"Stacked & Strong",rest:"2.5–3 min rest",ex:[["Bench Press","10@50%, 5@65%\n5@70%, 5@75%\n10@60%, 10@60%"],["Deadlift","5@65%, 5@70%\n5@75%, 5@75%"]]},
-    {name:"Jacked & Big",rest:"2 min rest",ex:[["BB Overhead Press (SS)","3×10"],["DB Lateral Iso Hold (SS)","3×30 sec"],["Close Grip Bench","4×5 @60–65%"]]},
-    {name:"Turning Heads",rest:"1.5–2 min",ex:[["EZ Bar Skullcrushers (SS)","3×15"],["BB Bicep 21s (SS)","3×21"]]},
-    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Rear Laterals (SS)","3×10"],["DB Shrugs (SS)","3×20"]]}
-  ]},
-  {name:"Day 2",day:"Tue",blocks:[
-    {name:"Stacked & Strong",rest:"2.5–3 min rest",ex:[["Back Squat","10@56%, 5@65%\n4×2@80%"],["One Arm DB Rows (SS)","4×5"],["DB RDLs (SS)","4×10"]]},
-    {name:"Jacked & Big",rest:"2 min rest",ex:[["Slow Strict Chin Up (SS)","4×2–5 reps"],["DB Pullover (SS)","4×5"]]},
-    {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Tate Press (SS)","4×15"],["DB Biceps Zottman Curls (SS)","4×10"]]},
-    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Walking Lunges","3×5 steps/leg"]]}
-  ]},
-  {name:"Day 3",day:"Thu",blocks:[
-    {name:"Stacked & Strong",rest:"2 min rest",ex:[["Bench Press","5@65%, 5@73%\n3×3@80%, 10@60%"],["Snatch Grip Deadlift","4×5 @50–62%"],["DB Incline Press","10–5–5"]]},
-    {name:"Jacked & Big",rest:"1.5–2 min",ex:[["Seated DB Arnold Press","3×10"],["DB Lateral Raise (SS)","3×10"],["DB Front Raise (SS)","3×10"]]},
-    {name:"Turning Heads",rest:"1.5 min",ex:[["Cable Triceps Pushdowns (SS)","3×15"],["Close Grip Pushups (SS)","3×10"]]},
-    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Bicep Hammer Curls","4×20"]]}
-  ]},
-  {name:"Day 4",day:"Fri",blocks:[
-    {name:"Stacked & Strong",rest:"2 min rest",ex:[["DB Bulgarian Split Squats","3×5"],["Front Squats","5@50%\n3×5@55%"]]},
-    {name:"Jacked & Big",rest:"2 min rest",ex:[["Slow Strict Pullups (SS)","4×2–5 reps"],["DB Rear Lateral Raise (SS)","4×10"],["BB Bent Over Rows","4×5"]]},
-    {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Kickbacks (SS)","3×15"],["DB Bicep Concentration Curls (SS)","3×15"]]},
-    {name:"Cardio Finisher",rest:"2 min",ex:[["BB Zercher Squats","2×10"]]}
-  ]}
-];
+// ── SUPABASE CONFIG ──────────────────────────────────────────────
+// Replace with your project URL + anon key (keep RLS strict on all tables).
+const SB_URL='https://gyxnnkcxghrijdfwffpp.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5eG5ua2N4Z2hyaWpkZndmZnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4NzU2NDUsImV4cCI6MjA5NjQ1MTY0NX0._pJLkgQZjBx6hu7pmEf3eLLPCZmQ2fShf4BhvTekt4w';
+const H={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
 
-const CHECKLIST_ITEMS=[
-  "Ate meal 1 before 9am",
-  "Ate meal 2 at lunch",
-  "Ate meal 3 before 7pm",
-  "Hit 162g protein today",
-  "No food after 8pm",
-  "Drank 3L+ water",
-  "Completed training session",
-  "Did 20-min incline walk",
-  "Asleep by 11pm — phone down"
-];
+async function sb(method,table,body,qs=''){
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/'+table+(qs?'?'+qs:''),{method,headers:H,body:body?JSON.stringify(body):undefined});
+    if(!r.ok){const e=await r.text();console.error('SB error',e);return null;}
+    const txt=await r.text();
+    return txt?JSON.parse(txt):[];
+  }catch(e){console.error('SB fetch error',e);return null;}
+}
+
+// ── UTILS ────────────────────────────────────────────────────────
+/** Local calendar date (YYYY-MM-DD). Using UTC ISO string was wrong for evening users in non-UTC zones. */
+function todayKey(){
+  const d=new Date();
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+function fmtDate(d){return new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function todayFull(){return new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
 
 const QUOTES=[
   {q:"PUSH PAST YOUR LIMITS!",s:"Vegeta, Prince of all Saiyans"},
-  {q:"EVERY DAY A SAIYAN GETS STRONGER!",s:"Train. Eat. Sleep. Repeat."},
-  {q:"OVER 9000 — YOUR POWER LEVEL CLIMBS!",s:"No late night eating. No excuses."},
+  {q:"EVERY DAY A SAIYAN GROWS STRONGER!",s:"Train. Eat. Sleep. Repeat."},
+  {q:"POWER LEVEL — OVER 9000!",s:"No late night eating. No excuses."},
   {q:"KAKAROT WILL NOT SURPASS ME!",s:"Hit 162g protein. Every single day."},
   {q:"I AM THE PRINCE OF ALL SAIYANS!",s:"8pm cutoff. Kitchen is closed."},
   {q:"FINAL FLASH — ALL IN!",s:"20 min incline walk. No skipping."},
   {q:"PRIDE OF A SAIYAN WARRIOR!",s:"3 meals before 7pm. Non-negotiable."}
 ];
 
-function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
+const DAYS_DATA=[
+  {name:"Day 1",day:"Mon",blocks:[
+    {name:"Stacked & Strong",rest:"2.5–3 min",ex:[["Bench Press","10@50%,5@65%,5@70%,5@75%,10@60%,10@60%"],["Deadlift","5@65%,5@70%,5@75%,5@75%"]]},
+    {name:"Jacked & Big",rest:"2 min",ex:[["BB Overhead Press (SS)","3×10"],["DB Lateral Iso Hold (SS)","3×30sec"],["Close Grip Bench","4×5 @60–65%"]]},
+    {name:"Turning Heads",rest:"1.5–2 min",ex:[["EZ Bar Skullcrushers (SS)","3×15"],["BB Bicep 21s (SS)","3×21"]]},
+    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Rear Laterals (SS)","3×10"],["DB Shrugs (SS)","3×20"]]}
+  ]},
+  {name:"Day 2",day:"Tue",blocks:[
+    {name:"Stacked & Strong",rest:"2.5–3 min",ex:[["Back Squat","10@56%,5@65%,4×2@80%"],["One Arm DB Rows (SS)","4×5"],["DB RDLs (SS)","4×10"]]},
+    {name:"Jacked & Big",rest:"2 min",ex:[["Slow Strict Chin Up (SS)","4×2–5"],["DB Pullover (SS)","4×5"]]},
+    {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Tate Press (SS)","4×15"],["DB Biceps Zottman Curls (SS)","4×10"]]},
+    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Walking Lunges","3×5 steps/leg"]]}
+  ]},
+  {name:"Day 3",day:"Thu",blocks:[
+    {name:"Stacked & Strong",rest:"2 min",ex:[["Bench Press","5@65%,5@73%,3×3@80%,10@60%"],["Snatch Grip Deadlift","4×5 @50–62%"],["DB Incline Press","10–5–5"]]},
+    {name:"Jacked & Big",rest:"1.5–2 min",ex:[["Seated DB Arnold Press","3×10"],["DB Lateral Raise (SS)","3×10"],["DB Front Raise (SS)","3×10"]]},
+    {name:"Turning Heads",rest:"1.5 min",ex:[["Cable Triceps Pushdowns (SS)","3×15"],["Close Grip Pushups (SS)","3×10"]]},
+    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Bicep Hammer Curls","4×20"]]}
+  ]},
+  {name:"Day 4",day:"Fri",blocks:[
+    {name:"Stacked & Strong",rest:"2 min",ex:[["DB Bulgarian Split Squats","3×5"],["Front Squats","5@50%,3×5@55%"]]},
+    {name:"Jacked & Big",rest:"2 min",ex:[["Slow Strict Pullups (SS)","4×2–5"],["DB Rear Lateral Raise (SS)","4×10"],["BB Bent Over Rows","4×5"]]},
+    {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Kickbacks (SS)","3×15"],["DB Bicep Concentration Curls (SS)","3×15"]]},
+    {name:"Cardio Finisher",rest:"2 min",ex:[["BB Zercher Squats","2×10"]]}
+  ]}
+];
 
-let sessions=load('sessions',{done:7,cells:Array(24).fill(0).map((_,i)=>i<7?1:0)});
-let logHistory=load('logHistory',[]);
-let checkData=load('checkData',{});
+const CHECKLIST_ITEMS=["Ate meal 1 before 9am","Ate meal 2 at lunch","Ate meal 3 before 7pm","Hit 162g protein today","No food after 8pm","Drank 3L+ water","Completed training session","Did 20-min incline walk","Asleep by 11pm — phone down"];
 
-function todayKey(){return new Date().toISOString().slice(0,10)}
-function formatDate(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
-function todayFull(){return new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
+// ── STATE ────────────────────────────────────────────────────────
+let sessions=[];
+let todayLog=null;
+let checkData={};
+let isOnline=false;
 
+// ── SYNC STATUS ──────────────────────────────────────────────────
+function setSyncStatus(state,label){
+  const dot=document.getElementById('syncDot');
+  const lbl=document.getElementById('syncLabel');
+  dot.className='sync-dot '+state;
+  lbl.textContent=label;
+}
+
+// ── TOAST ────────────────────────────────────────────────────────
+function showToast(msg,isError=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast'+(isError?' error':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── SCREENS ──────────────────────────────────────────────────────
 function showScreen(id,btn){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
-  if(id==='streak')renderStreak();
-  if(id==='checklist')renderChecklist();
-  if(id==='home')renderHistory();
+  if(id==='streak'){loadSessions().then(renderStreak);}
+  if(id==='checklist'){loadChecklist().then(renderChecklist);}
+  if(id==='home'){loadTodayLog().then(log=>{renderHomeStats(log);updatePowerBar();});}
 }
 
-function initHome(){
-  document.getElementById('todayDate').textContent=todayFull();
-  const nextDay=sessions.done+1;
-  document.getElementById('dayChip').textContent='DAY '+nextDay+' NEXT';
-  document.getElementById('sessionsDone').textContent=sessions.done;
-  updatePowerBar();
+// ── LOAD DATA ────────────────────────────────────────────────────
+async function loadSessions(){
+  const data=await sb('GET','workout_sessions','','select=*&order=day_number.asc');
+  if(data===null)return null;
+  sessions=data;
+  return data;
+}
 
+async function loadTodayLog(){
+  const data=await sb('GET','daily_log','','select=*&log_date=eq.'+todayKey()+'&limit=1');
+  if(data===null)return null;
+  if(data.length>0){todayLog=data[0];return data[0];}
+  todayLog=null;return null;
+}
+
+async function loadLogHistory(){
+  const h=await sb('GET','daily_log','','select=*&order=log_date.desc&limit=14');
+  return h===null?null:h;
+}
+
+async function loadChecklist(){
+  const data=await sb('GET','checklist','','select=*&log_date=eq.'+todayKey());
+  if(data===null)return;
+  checkData={};
+  data.forEach(r=>{if(r.completed)checkData[r.item_index]=true;});
+}
+
+// ── HOME ─────────────────────────────────────────────────────────
+async function initHome(){
+  document.getElementById('todayDate').textContent=todayFull();
   const q=QUOTES[new Date().getDay()%QUOTES.length];
   document.getElementById('motivQuote').textContent=q.q;
   document.getElementById('motivSub').textContent='— '+q.s;
-
-  const today=todayKey();
-  const todayLog=logHistory.find(l=>l.date===today);
-  if(todayLog){
-    document.getElementById('todaySteps').textContent=Number(todayLog.steps).toLocaleString();
-    document.getElementById('todayCals').textContent=todayLog.cals;
-    document.getElementById('todayCardio').textContent=todayLog.cardio;
-  }
-
   const h=new Date().getHours();
   let msg='';
-  if(h>=21){msg="⚠️ 9PM — Kitchen closed. Log your day. No food. A true Saiyan respects the cutoff.";}
-  else if(h>=17){msg:"Evening. Dinner window 5–7pm. Low carb only. Log your numbers tonight.";}
-  else if(h>=12){msg="Afternoon. Meal 2 done? Hit that protein. Train today like a Saiyan.";}
-  else if(h>=7){msg="Morning. Meal 1 NOW. Eggs or Greek yogurt. A Saiyan fuels before battle.";}
-  else{msg="Early start. Fasted walk option this morning. Log yesterday if you haven't.";}
+  if(h>=21)msg="⚠️ 9PM — Kitchen closed. Log your day. A true Saiyan respects the cutoff.";
+  else if(h>=17)msg="Evening. Dinner window 5–7pm. Low carb only. Log your numbers tonight.";
+  else if(h>=12)msg="Afternoon. Meal 2 done? Hit that protein. Train today like a Saiyan.";
+  else if(h>=7)msg="Morning. Meal 1 NOW. Eggs or Greek yogurt. A Saiyan fuels before battle.";
+  else msg="Early start. Fasted walk option this morning. Log yesterday if you haven't.";
   document.getElementById('reminderBanner').textContent=msg;
-  renderHistory();
+
+  setSyncStatus('syncing','Syncing...');
+  const [sess,log,hist]=await Promise.all([loadSessions(),loadTodayLog(),loadLogHistory()]);
+  const failed=sess===null||hist===null;
+  if(failed){
+    isOnline=false;
+    setSyncStatus('error','Could not reach Supabase');
+    showToast('SYNC FAILED — CHECK CONNECTION',true);
+  }else{
+    isOnline=true;
+    setSyncStatus('online','Synced with Supabase ✓');
+  }
+  renderHomeStats(log);
+  renderHistory(hist||[]);
+  updatePowerBar();
+}
+
+function renderHomeStats(log){
+  if(log){
+    document.getElementById('todaySteps').textContent=Number(log.steps||0).toLocaleString();
+    document.getElementById('todayCals').textContent=log.calories_burned??'—';
+    document.getElementById('todayCardio').innerHTML=(log.cardio_minutes!=null&&log.cardio_minutes!=='')?String(log.cardio_minutes)+'<span class="stat-unit"> min</span>':'—<span class="stat-unit"> min</span>';
+    document.getElementById('inputSteps').value=log.steps??'';
+    document.getElementById('inputCals').value=log.calories_burned??'';
+    document.getElementById('inputCardio').value=log.cardio_minutes??'';
+  }else{
+    document.getElementById('todaySteps').textContent='—';
+    document.getElementById('todayCals').textContent='—';
+    document.getElementById('todayCardio').innerHTML='—<span class="stat-unit"> min</span>';
+    document.getElementById('inputSteps').value='';
+    document.getElementById('inputCals').value='';
+    document.getElementById('inputCardio').value='';
+  }
 }
 
 function updatePowerBar(){
-  const done=sessions.cells.filter(Boolean).length;
+  const done=sessions.filter(s=>s.completed).length;
   const pct=Math.round(done/24*100);
   document.getElementById('powerBar').style.width=pct+'%';
   document.getElementById('powerPct').textContent=pct;
   document.getElementById('doneLabel').textContent=done+' / 24 sessions';
-  document.getElementById('sessionsDone').textContent=done;
+  document.getElementById('sessionsDone').textContent=String(done);
+  const nextDay=Math.min(done+1,24);
+  document.getElementById('dayChip').textContent=done>=24?'ALL 24 DONE':'DAY '+nextDay+' NEXT';
 }
 
-function saveLog(){
-  const steps=document.getElementById('inputSteps').value||'0';
-  const cals=document.getElementById('inputCals').value||'0';
-  const cardio=document.getElementById('inputCardio').value||'0';
-  const today=todayKey();
-  logHistory=logHistory.filter(l=>l.date!==today);
-  logHistory.unshift({date:today,steps,cals,cardio});
-  if(logHistory.length>30)logHistory=logHistory.slice(0,30);
-  save('logHistory',logHistory);
-  document.getElementById('todaySteps').textContent=Number(steps).toLocaleString();
-  document.getElementById('todayCals').textContent=cals;
-  document.getElementById('todayCardio').textContent=cardio;
-  document.getElementById('inputSteps').value='';
-  document.getElementById('inputCals').value='';
-  document.getElementById('inputCardio').value='';
-  showToast('POWER LOGGED ⚡');
-  renderHistory();
+async function saveLog(){
+  const steps=parseInt(document.getElementById('inputSteps').value,10)||0;
+  const cals=parseInt(document.getElementById('inputCals').value,10)||0;
+  const cardio=parseInt(document.getElementById('inputCardio').value,10)||0;
+  const btn=document.getElementById('saveLogBtn');
+  btn.disabled=true;btn.textContent='SAVING...';
+  setSyncStatus('syncing','Saving...');
+
+  const payload={log_date:todayKey(),steps,calories_burned:cals,cardio_minutes:cardio};
+  let result;
+  if(todayLog){
+    result=await sb('PATCH','daily_log',payload,'log_date=eq.'+todayKey());
+  }else{
+    result=await sb('POST','daily_log',payload);
+  }
+
+  if(result!==null){
+    let row=Array.isArray(result)?result[0]:result;
+    if(!row||Array.isArray(result)&&result.length===0){
+      await loadTodayLog();
+      row=todayLog;
+    }
+    if(row){
+      todayLog=row;
+      document.getElementById('todaySteps').textContent=Number(steps).toLocaleString();
+      document.getElementById('todayCals').textContent=cals||'—';
+      document.getElementById('todayCardio').innerHTML=(Number.isFinite(cardio)?String(cardio):'—')+'<span class="stat-unit"> min</span>';
+      showToast('POWER LOGGED ⚡');
+    }else{
+      showToast('SAVED — RELOADING',false);
+    }
+    setSyncStatus('online','Synced with Supabase ✓');
+    const hist=await loadLogHistory();
+    renderHistory(hist);
+  }else{
+    showToast('SYNC FAILED — CHECK CONNECTION',true);
+    setSyncStatus('error','Sync error');
+  }
+  btn.disabled=false;btn.textContent='POWER UP — SAVE DAY →';
 }
 
-function renderHistory(){
+async function renderHistory(hist){
   const el=document.getElementById('historyList');
-  if(!logHistory.length){el.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No battle records yet. Log your first day.</div>';return;}
-  el.innerHTML=logHistory.slice(0,7).map(l=>`
+  if(!hist||!hist.length){el.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No battle records yet. Log your first day.</div>';return;}
+  el.innerHTML=hist.map(l=>`
     <div class="history-row">
-      <span class="history-date">${formatDate(l.date)}</span>
+      <span class="history-date">${fmtDate(l.log_date)}</span>
       <div class="history-stats">
-        <div class="history-stat"><div class="history-stat-val">${Number(l.steps).toLocaleString()}</div><div class="history-stat-label">steps</div></div>
-        <div class="history-stat"><div class="history-stat-val">${l.cals}</div><div class="history-stat-label">kcal</div></div>
-        <div class="history-stat"><div class="history-stat-val">${l.cardio}m</div><div class="history-stat-label">cardio</div></div>
+        <div class="history-stat"><div class="history-stat-val">${Number(l.steps||0).toLocaleString()}</div><div class="history-stat-label">steps</div></div>
+        <div class="history-stat"><div class="history-stat-val">${l.calories_burned||0}</div><div class="history-stat-label">kcal</div></div>
+        <div class="history-stat"><div class="history-stat-val">${l.cardio_minutes||0}m</div><div class="history-stat-label">cardio</div></div>
       </div>
     </div>`).join('');
 }
 
-function renderStreak(){
+// ── STREAK ───────────────────────────────────────────────────────
+function bindStreakPress(cell,callbackSkip){
+  let pressTimer=null;
+  const armLong=()=>{
+    cell._longConsumed=false;
+    pressTimer=setTimeout(()=>{
+      pressTimer=null;
+      cell._longConsumed=true;
+      callbackSkip();
+      setTimeout(()=>{cell._longConsumed=false;},500);
+    },600);
+  };
+  const disarm=()=>{if(pressTimer){clearTimeout(pressTimer);pressTimer=null;}};
+  cell.addEventListener('touchstart',armLong,{passive:true});
+  cell.addEventListener('touchend',disarm,{passive:true});
+  cell.addEventListener('touchcancel',disarm,{passive:true});
+  cell.addEventListener('mousedown',armLong);
+  cell.addEventListener('mouseup',disarm);
+  cell.addEventListener('mouseleave',disarm);
+}
+
+async function renderStreak(){
+  if(!sessions.length)await loadSessions();
   const grid=document.getElementById('streakGrid');
   grid.innerHTML='';
-  sessions.cells.forEach((done,i)=>{
+  const done=sessions.filter(s=>s.completed).length;
+  const skipped=sessions.filter(s=>!s.completed&&s.completed_at!==null).length;
+
+  sessions.forEach((s,i)=>{
     const cell=document.createElement('div');
-    const isNext=i===sessions.done;
-    cell.className='streak-cell'+(done?' done':isNext?' today-cell':'');
-    cell.textContent=i+1;
-    cell.onclick=()=>toggleSession(i);
+    const isNext=!s.completed&&s.completed_at===null&&sessions.slice(0,i).every(x=>x.completed||x.completed_at!==null);
+    let cls='streak-cell';
+    if(s.completed)cls+=' done';
+    else if(s.completed_at!==null)cls+=' skipped';
+    else if(isNext)cls+=' today-cell';
+    cell.className=cls;
+    cell.textContent=s.day_number;
+    cell.title='Day '+s.day_number;
+    bindStreakPress(cell,()=>toggleSession(i,true));
+    cell.addEventListener('click',()=>{if(cell._longConsumed)return;toggleSession(i,false);});
     grid.appendChild(cell);
   });
-  const done=sessions.cells.filter(Boolean).length;
+
   document.getElementById('doneCount').textContent=done;
-  document.getElementById('remainCount').textContent=24-done;
+  document.getElementById('skipCount').textContent=skipped;
   const pct=Math.round(done/24*100);
   document.getElementById('progPct').textContent=pct+'%';
   document.getElementById('mainProgressBar').style.width=pct+'%';
-  // Dragon balls — 1 per 3 sessions done, max 7
   const balls=Math.min(7,Math.floor(done/3));
-  const dbEl=document.getElementById('dragonBalls');
-  dbEl.innerHTML=Array(7).fill(0).map((_,i)=>i<balls?'🟡':'⚫').join('');
+  document.getElementById('dragonBalls').innerHTML=Array(7).fill(0).map((_,i)=>i<balls?'🟡':'⚫').join('');
+  renderWorkoutLog();
 }
 
-function toggleSession(i){
-  sessions.cells[i]=sessions.cells[i]?0:1;
-  sessions.done=sessions.cells.filter(Boolean).length;
-  save('sessions',sessions);
-  renderStreak();
-  updatePowerBar();
-  if(sessions.cells[i])showToast('SESSION '+(i+1)+' CONQUERED ⚡');
+async function toggleSession(i,forceSkip){
+  const s=sessions[i];
+  let completed,completed_at;
+  if(forceSkip){completed=false;completed_at=new Date().toISOString();}
+  else if(s.completed){completed=false;completed_at=null;}
+  else{completed=true;completed_at=new Date().toISOString();}
+
+  setSyncStatus('syncing','Saving...');
+  const result=await sb('PATCH','workout_sessions',{completed,completed_at},'id=eq.'+s.id);
+  if(result!==null){
+    sessions[i]={...s,completed,completed_at};
+    updatePowerBar();
+    renderStreak();
+    setSyncStatus('online','Synced ✓');
+    if(completed)showToast('SESSION '+(i+1)+' CONQUERED ⚡');
+    else if(forceSkip)showToast('SESSION '+(s.day_number)+' MARKED SKIPPED');
+    else showToast('SESSION '+(s.day_number)+' UNMARKED');
+  }else{
+    showToast('SYNC FAILED',true);
+    setSyncStatus('error','Error');
+  }
 }
 
-function markNextSession(){
-  const next=sessions.cells.findIndex(v=>!v);
-  if(next===-1){showToast('ALL 24 SESSIONS — ELITE SAIYAN!');return;}
-  toggleSession(next);
+async function markNextSession(){
+  await loadSessions();
+  const next=sessions.findIndex(s=>!s.completed&&s.completed_at===null);
+  if(next===-1){showToast('ALL 24 SESSIONS — ELITE SAIYAN! 🟡');return;}
+  await toggleSession(next,false);
 }
 
+function renderWorkoutLog(){
+  const el=document.getElementById('workoutLogTable');
+  if(!sessions.length){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--text-dim)">No data</div>';return;}
+  el.innerHTML=`<table class="wlog-table">
+    <thead><tr><th>#</th><th>Status</th><th>Date</th></tr></thead>
+    <tbody>${sessions.map(s=>{
+      let badge,dateStr;
+      if(s.completed){badge='<span class="badge-done">DONE ✓</span>';dateStr=s.completed_at?new Date(s.completed_at).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'—';}
+      else if(s.completed_at){badge='<span class="badge-skip">SKIPPED ✗</span>';dateStr=new Date(s.completed_at).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+      else{badge='<span class="badge-pending">Pending</span>';dateStr='—';}
+      return`<tr><td style="font-family:'Bangers',cursive;font-size:16px;color:var(--text-muted)">${s.day_number}</td><td>${badge}</td><td style="color:var(--text-muted);font-size:12px;font-family:'Space Mono',monospace">${dateStr}</td></tr>`;
+    }).join('')}</tbody></table>`;
+}
+
+// ── PROGRAM ──────────────────────────────────────────────────────
 function initProgram(){
-  const tabs=document.getElementById('dayTabs');
-  tabs.innerHTML=DAYS_DATA.map((d,i)=>`<button class="day-tab${i===0?' active':''}" onclick="selectDay(${i},this)">${d.name} · ${d.day}</button>`).join('');
+  document.getElementById('dayTabs').innerHTML=DAYS_DATA.map((d,i)=>`<button class="day-tab${i===0?' active':''}" onclick="selectDay(${i},this)">${d.name} · ${d.day}</button>`).join('');
   renderDay(0);
 }
-
-function selectDay(i,el){
-  document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  renderDay(i);
-}
-
+function selectDay(i,el){document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderDay(i);}
 function renderDay(i){
   const d=DAYS_DATA[i];
-  let html=d.blocks.map(b=>`
+  document.getElementById('programContent').innerHTML=d.blocks.map(b=>`
     <div class="block-card">
       <div class="block-header"><span class="block-name">${b.name.toUpperCase()}</span><span class="block-rest">${b.rest}</span></div>
       ${b.ex.map(e=>`<div class="ex-row"><span class="ex-name">${e[0]}</span><span class="ex-sets">${e[1]}</span></div>`).join('')}
-    </div>`).join('');
-  html+=`<div class="cardio-reminder"><strong>POST-LIFT: INCLINE WALK</strong><br>20 min · 15% incline · 2.5–3 mph. Non-negotiable. Every single session.</div>`;
-  document.getElementById('programContent').innerHTML=html;
+    </div>`).join('')+`<div class="cardio-reminder"><strong>POST-LIFT: INCLINE WALK</strong><br>20 min · 15% incline · 2.5–3 mph. Non-negotiable.</div>`;
 }
 
-function renderChecklist(){
+// ── CHECKLIST ────────────────────────────────────────────────────
+async function renderChecklist(){
   document.getElementById('checkDate').textContent=todayFull();
-  const key=todayKey();
-  const saved=checkData[key]||{};
   document.getElementById('checkList').innerHTML=CHECKLIST_ITEMS.map((item,i)=>{
-    const checked=!!saved[i];
-    return `<div class="check-item${checked?' checked-item':''}" onclick="toggleCheck(${i})">
+    const checked=!!checkData[i];
+    return`<div class="check-item${checked?' checked-item':''}" onclick="toggleCheck(${i})">
       <div class="check-box${checked?' checked':''}">${checked?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
-      <span class="check-text">${item}</span>
-    </div>`;
+      <span class="check-text">${item}</span></div>`;
   }).join('');
   updateCheckProgress();
 }
 
-function toggleCheck(i){
-  const key=todayKey();
-  if(!checkData[key])checkData[key]={};
-  checkData[key][i]=!checkData[key][i];
-  save('checkData',checkData);
+async function toggleCheck(i){
+  const prev=!!checkData[i];
+  checkData[i]=!prev;
   renderChecklist();
+
+  const existing=await sb('GET','checklist','','log_date=eq.'+todayKey()+'&item_index=eq.'+i+'&limit=1');
+  let ok=true;
+  if(existing===null)ok=false;
+  else if(existing.length>0){
+    const r=await sb('PATCH','checklist',{completed:!!checkData[i]},'log_date=eq.'+todayKey()+'&item_index=eq.'+i);
+    if(r===null)ok=false;
+  }else{
+    const r=await sb('POST','checklist',{log_date:todayKey(),item_index:i,completed:!!checkData[i]});
+    if(r===null)ok=false;
+  }
+  if(!ok){
+    checkData[i]=prev;
+    renderChecklist();
+    showToast('CHECKLIST SYNC FAILED',true);
+  }
 }
 
 function updateCheckProgress(){
-  const key=todayKey();
-  const saved=checkData[key]||{};
-  const done=Object.values(saved).filter(Boolean).length;
+  const done=Object.values(checkData).filter(Boolean).length;
   const pct=Math.round(done/CHECKLIST_ITEMS.length*100);
   document.getElementById('checkProgress').style.width=pct+'%';
   document.getElementById('checkCount').textContent=done+' / '+CHECKLIST_ITEMS.length;
   document.getElementById('checkPct').textContent=pct+'%';
   const msg=document.getElementById('checkMsg');
-  if(pct===100)msg.innerHTML='<span style="color:var(--gold)">PERFECT DAY — SUPER SAIYAN LEVEL ACHIEVED! ⚡</span>';
+  if(pct===100)msg.innerHTML='<span style="color:var(--gold)">PERFECT DAY — SUPER SAIYAN ACHIEVED! ⚡</span>';
   else if(pct>=78)msg.innerHTML='<span style="color:var(--purple-light)">ALMOST THERE — FINISH THE MISSION!</span>';
   else if(pct>=44)msg.innerHTML='<span style="color:var(--gold-dim)">HALF POWER — PUSH HARDER SAIYAN!</span>';
-  else msg.innerHTML='WEAK. GET MOVING.';
+  else msg.textContent='WEAK. GET MOVING.';
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
+// ── REMINDER ─────────────────────────────────────────────────────
 function checkReminder(){
   const h=new Date().getHours();
   const key='reminded-'+todayKey();
-  if(h>=21&&!load(key,false)){
-    save(key,true);
-    setTimeout(()=>showToast('⏰ LOG YOUR POWER — 9PM!'),1000);
+  if(h>=21&&localStorage.getItem(key)!=='1'){
+    localStorage.setItem(key,'1');
+    setTimeout(()=>showToast('⏰ LOG YOUR POWER — 9PM!'),1200);
   }
 }
 
+// ── BOOT ─────────────────────────────────────────────────────────
 initHome();
 initProgram();
 checkReminder();
