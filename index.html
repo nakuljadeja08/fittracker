@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FitTracker">
+<meta name="theme-color" content="#0a0a0a">
+<title>FitTracker</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;
+  --surface:#141414;
+  --surface2:#1e1e1e;
+  --surface3:#282828;
+  --green:#00ff87;
+  --green-dim:#00c96a;
+  --green-dark:#003d21;
+  --red:#ff4444;
+  --amber:#ffb830;
+  --text:#f0f0f0;
+  --text-muted:#888;
+  --text-dim:#555;
+  --border:#2a2a2a;
+  --radius:14px;
+  --radius-sm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow:hidden}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:430px;margin:0 auto;position:relative}
+
+/* NAV */
+.nav{display:flex;background:var(--surface);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));flex-shrink:0}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--text-dim);cursor:pointer;padding:6px 4px;font-family:'Syne',sans-serif;font-size:10px;font-weight:500;transition:color 0.2s}
+.nav-btn.active{color:var(--green)}
+.nav-btn svg{width:22px;height:22px;stroke-width:1.8}
+
+/* SCREENS */
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:env(safe-area-inset-top,20px) 16px 16px;display:none;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen.active{display:block}
+
+/* HEADER */
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-top:8px}
+.header-title{font-size:28px;font-weight:800;line-height:1}
+.header-sub{font-size:13px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace}
+.date-chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace}
+
+/* BANNER */
+.banner{background:var(--green-dark);border:1px solid var(--green-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:#a0ffd1}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.stat-label{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em}
+.stat-val{font-size:26px;font-weight:700;line-height:1}
+.stat-unit{font-size:12px;color:var(--text-muted);font-weight:400}
+.stat-card.accent{background:var(--green-dark);border-color:var(--green-dim)}
+.stat-card.accent .stat-val{color:var(--green)}
+
+/* LOG INPUT */
+.log-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.log-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.log-title .dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.log-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.log-row:last-child{margin-bottom:0}
+.log-label{font-size:13px;color:var(--text-muted);width:100px;flex-shrink:0}
+.log-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:16px;font-family:'Syne',sans-serif;outline:none;-webkit-appearance:none}
+.log-input:focus{border-color:var(--green-dim)}
+.log-unit{font-size:12px;color:var(--text-dim);width:40px;text-align:right;font-family:'Space Mono',monospace}
+.save-btn{width:100%;background:var(--green);color:#000;border:none;border-radius:var(--radius-sm);padding:14px;font-size:15px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;margin-top:14px;letter-spacing:0.02em;transition:opacity 0.2s}
+.save-btn:active{opacity:0.8}
+
+/* HISTORY */
+.history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
+.history-row:last-child{border-bottom:none}
+.history-date{color:var(--text-muted);font-family:'Space Mono',monospace;font-size:12px}
+.history-stats{display:flex;gap:16px}
+.history-stat{text-align:right}
+.history-stat-val{font-weight:600;font-size:14px}
+.history-stat-label{font-size:11px;color:var(--text-dim)}
+
+/* STREAK */
+.streak-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}
+.streak-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Space Mono',monospace;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);transition:all 0.15s;user-select:none}
+.streak-cell.done{background:var(--green);border-color:var(--green);color:#000}
+.streak-cell.today-cell{border-color:var(--green-dim);color:var(--green)}
+.streak-cell.rest{background:var(--surface2);color:var(--text-dim)}
+
+/* PROGRAM */
+.day-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.day-tabs::-webkit-scrollbar{display:none}
+.day-tab{flex-shrink:0;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.15s}
+.day-tab.active{background:var(--green);color:#000;border-color:var(--green)}
+.block-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px}
+.block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.block-name{font-size:13px;font-weight:700;color:var(--green)}
+.block-rest{font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace}
+.ex-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border)}
+.ex-name{font-size:13px;font-weight:600;flex:1;padding-right:8px;line-height:1.4}
+.ex-sets{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;text-align:right;flex-shrink:0;line-height:1.4}
+
+/* NUTRITION */
+.rule-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.rule-card.forbidden{border-color:#3d1515}
+.rule-card.mandatory{border-color:var(--green-dark)}
+.rule-header{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.rule-time{font-family:'Space Mono',monospace;font-size:11px;color:var(--green);background:var(--green-dark);padding:2px 8px;border-radius:999px}
+.rule-time.red{color:#ff8080;background:#3d1515}
+.rule-body{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* CHECKLIST */
+.check-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.check-item:last-child{border-bottom:none}
+.check-box{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.check-box.checked{background:var(--green);border-color:var(--green)}
+.check-text{font-size:14px;flex:1;line-height:1.4}
+.check-item.checked-item .check-text{color:var(--text-muted);text-decoration:line-through}
+.progress-wrap{background:var(--surface2);border-radius:999px;height:6px;margin:16px 0 8px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:999px;transition:width 0.3s}
+.prog-info{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-bottom:16px}
+
+/* REMINDER TOAST */
+.toast{position:fixed;top:env(safe-area-inset-top,20px);left:50%;transform:translateX(-50%) translateY(-100px);background:var(--amber);color:#000;border-radius:var(--radius);padding:12px 20px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);max-width:360px;width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* SECTION LABEL */
+.section-label{font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;font-family:'Space Mono',monospace;margin:20px 0 10px}
+
+/* WEEK LABEL ROW */
+.week-label-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px}
+.week-label{text-align:center;font-size:10px;color:var(--text-dim);font-family:'Space Mono',monospace}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- SCREENS -->
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="header">
+      <div>
+        <div class="header-title">FitTracker</div>
+        <div class="header-sub" id="todayDate"></div>
+      </div>
+      <div class="date-chip" id="dayChip">Day 8</div>
+    </div>
+
+    <div class="banner" id="reminderBanner"></div>
+
+    <div class="stat-grid">
+      <div class="stat-card accent">
+        <div class="stat-label">Steps today</div>
+        <div class="stat-val" id="todaySteps">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Cal burned</div>
+        <div class="stat-val" id="todayCals">—<span class="stat-unit"></span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Cardio</div>
+        <div class="stat-val" id="todayCardio">—<span class="stat-unit"> min</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Program day</div>
+        <div class="stat-val" id="programDay">8</div>
+      </div>
+    </div>
+
+    <div class="section-label">Log today's numbers</div>
+    <div class="log-section">
+      <div class="log-title"><span class="dot"></span>End of day log</div>
+      <div class="log-row">
+        <span class="log-label">Steps</span>
+        <input type="number" class="log-input" id="inputSteps" placeholder="0" inputmode="numeric">
+        <span class="log-unit">steps</span>
+      </div>
+      <div class="log-row">
+        <span class="log-label">Cal burned</span>
+        <input type="number" class="log-input" id="inputCals" placeholder="0" inputmode="numeric">
+        <span class="log-unit">kcal</span>
+      </div>
+      <div class="log-row">
+        <span class="log-label">Cardio</span>
+        <input type="number" class="log-input" id="inputCardio" placeholder="0" inputmode="numeric">
+        <span class="log-unit">min</span>
+      </div>
+      <button class="save-btn" onclick="saveLog()">Save day →</button>
+    </div>
+
+    <div class="section-label">Recent history</div>
+    <div class="log-section" style="padding:4px 16px">
+      <div id="historyList"><div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No entries yet — log your first day above</div></div>
+    </div>
+  </div>
+
+  <!-- STREAK -->
+  <div class="screen" id="screen-streak">
+    <div class="header">
+      <div>
+        <div class="header-title">Streak</div>
+        <div class="header-sub">PPSA program — 24 sessions</div>
+      </div>
+    </div>
+
+    <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="stat-card accent">
+        <div class="stat-label">Done</div>
+        <div class="stat-val" id="doneCount">7</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Remaining</div>
+        <div class="stat-val" id="remainCount">17</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Progress</div>
+        <div class="stat-val" id="progPct">29<span class="stat-unit">%</span></div>
+      </div>
+    </div>
+
+    <div class="progress-wrap" style="margin:0 0 20px">
+      <div class="progress-fill" id="mainProgressBar" style="width:29%"></div>
+    </div>
+
+    <div class="section-label">Tap a session to mark complete</div>
+
+    <div class="week-label-row">
+      <div class="week-label">W1</div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div>
+      <div class="week-label">W2</div><div class="week-label"></div><div class="week-label"></div>
+    </div>
+    <div class="streak-grid" id="streakGrid"></div>
+
+    <div class="section-label">Today's workout</div>
+    <div class="log-section" style="padding:14px 16px">
+      <div class="log-title"><span class="dot"></span>Mark session done</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">You're on Day 8 tomorrow. Tap the session in the grid above or use the button below after completing your workout.</div>
+      <button class="save-btn" onclick="markNextSession()">Mark next session complete →</button>
+    </div>
+  </div>
+
+  <!-- PROGRAM -->
+  <div class="screen" id="screen-program">
+    <div class="header">
+      <div>
+        <div class="header-title">Program</div>
+        <div class="header-sub">PPSA — Stacked, Jacked & Turning Heads II</div>
+      </div>
+    </div>
+    <div class="day-tabs" id="dayTabs"></div>
+    <div id="programContent"></div>
+  </div>
+
+  <!-- NUTRITION -->
+  <div class="screen" id="screen-nutrition">
+    <div class="header">
+      <div>
+        <div class="header-title">Nutrition</div>
+        <div class="header-sub">Non-negotiable rules</div>
+      </div>
+    </div>
+
+    <div class="rule-card mandatory">
+      <div class="rule-header"><span class="rule-time">7–9am</span> Meal 1 — Breakfast</div>
+      <div class="rule-body">4–6 eggs or 1 cup Greek yogurt + fruit. High protein start. This meal wakes up your metabolism. Skip it and your body stores fat all day.</div>
+    </div>
+    <div class="rule-card mandatory">
+      <div class="rule-header"><span class="rule-time">12–1pm</span> Meal 2 — Lunch</div>
+      <div class="rule-body">6–8oz chicken or fish + rice or sweet potato + vegetables. This is your biggest meal. Carbs here — not at night.</div>
+    </div>
+    <div class="rule-card mandatory">
+      <div class="rule-header"><span class="rule-time">5–7pm</span> Meal 3 — Dinner</div>
+      <div class="rule-body">6oz protein + vegetables only. No rice, no bread, no pasta. Low carb at night. Done eating by 7pm max.</div>
+    </div>
+    <div class="rule-card forbidden">
+      <div class="rule-header"><span class="rule-time red">8pm CUTOFF</span> Kitchen is closed</div>
+      <div class="rule-body">Water and black coffee only. No exceptions. No "just this once." Late eating spikes insulin overnight — that's exactly where your side fat comes from.</div>
+    </div>
+
+    <div class="section-label">Daily protein target</div>
+    <div class="stat-card" style="margin-bottom:16px">
+      <div class="stat-label">Target — 1g per lb bodyweight</div>
+      <div class="stat-val" style="color:var(--green)">162<span class="stat-unit">g protein / day</span></div>
+    </div>
+
+    <div class="section-label">Never touch these</div>
+    <div class="rule-card forbidden">
+      <div class="rule-header"><span class="rule-time red">BANNED</span> Liquid calories</div>
+      <div class="rule-body">Juice, soda, alcohol, flavored coffee drinks. Water, black coffee, green tea only.</div>
+    </div>
+    <div class="rule-card forbidden">
+      <div class="rule-header"><span class="rule-time red">BANNED</span> Carbs after 5pm</div>
+      <div class="rule-body">White rice, bread, pasta, snacks. All carbs go in meal 1 and 2 only.</div>
+    </div>
+
+    <div class="section-label">Cardio rules</div>
+    <div class="rule-card mandatory">
+      <div class="rule-header"><span class="rule-time">POST-LIFT</span> Incline walk</div>
+      <div class="rule-body">20 min. 15% incline. 2.5–3 mph. Every single session. Non-negotiable.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-header"><span class="rule-time" style="color:var(--amber);background:#3d2a00">WEEKLY</span> Fasted walk</div>
+      <div class="rule-body">Saturday or Sunday morning — before eating. 30 min easy walk. Targets stubborn oblique fat directly.</div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="screen" id="screen-checklist">
+    <div class="header">
+      <div>
+        <div class="header-title">Daily check</div>
+        <div class="header-sub" id="checkDate"></div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="checkProgress" style="width:0%"></div>
+    </div>
+    <div class="prog-info">
+      <span id="checkCount">0 / 9</span>
+      <span id="checkPct">0%</span>
+    </div>
+    <div id="checkList"></div>
+    <div id="checkMsg" style="margin-top:16px;font-size:13px;line-height:1.6;color:var(--text-muted);min-height:40px"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showScreen('home',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav-btn" onclick="showScreen('streak',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Streak
+    </button>
+    <button class="nav-btn" onclick="showScreen('program',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Program
+    </button>
+    <button class="nav-btn" onclick="showScreen('nutrition',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      Nutrition
+    </button>
+    <button class="nav-btn" onclick="showScreen('checklist',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Checklist
+    </button>
+  </nav>
+</div>
+
+<script>
+// ---- DATA ----
+const DAYS_DATA=[
+  {name:"Day 1",day:"Mon",blocks:[
+    {name:"Stacked & Strong",rest:"2.5–3 min rest",ex:[["Bench Press","10@50%, 5@65%\n5@70%, 5@75%\n10@60%, 10@60%"],["Deadlift","5@65%, 5@70%\n5@75%, 5@75%"]]},
+    {name:"Jacked & Big",rest:"2 min rest",ex:[["BB Overhead Press (SS)","3×10"],["DB Lateral Iso Hold (SS)","3×30 sec"],["Close Grip Bench","4×5 @60–65%"]]},
+    {name:"Turning Heads",rest:"1.5–2 min",ex:[["EZ Bar Skullcrushers (SS)","3×15"],["BB Bicep 21s (SS)","3×21"]]},
+    {name:"Cardio",rest:"minimal",ex:[["DB Rear Laterals (SS)","3×10"],["DB Shrugs (SS)","3×20"]]}
+  ]},
+  {name:"Day 2",day:"Tue",blocks:[
+    {name:"Stacked & Strong",rest:"2.5–3 min rest",ex:[["Back Squat","10@56%, 5@65%\n4×2@80%"],["One Arm DB Rows (SS)","4×5"],["DB RDLs (SS)","4×10"]]},
+    {name:"Jacked & Big",rest:"2 min rest",ex:[["Slow Strict Chin Up (SS)","4×2–5 reps"],["DB Pullover (SS)","4×5"]]},
+    {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Tate Press (SS)","4×15"],["DB Biceps Zottman Curls (SS)","4×10"]]},
+    {name:"Cardio",rest:"minimal",ex:[["DB Walking Lunges","3×5 steps/leg"]]}
+  ]},
+  {name:"Day 3",day:"Thu",blocks:[
+    {name:"Stacked & Strong",rest:"2 min rest",ex:[["Bench Press","5@65%, 5@73%\n3×3@80%, 10@60%"],["Snatch Grip Deadlift","4×5 @50–62%"],["DB Incline Press","10–5–5"]]},
+    {name:"Jacked & Big",rest:"1.5–2 min",ex:[["Seated DB Arnold Press","3×10"],["DB Lateral Raise (SS)","3×10"],["DB Front Raise (SS)","3×10"]]},
+    {name:"Turning Heads",rest:"1.5 min",ex:[["Cable Triceps Pushdowns (SS)","3×15"],["Close Grip Pushups (SS)","3×10"]]},
+    {name:"Cardio",rest:"minimal",ex:[["DB Bicep Hammer Curls","4×20"]]}
+  ]},
+  {name:"Day 4",day:"Fri",blocks:[
+    {name:"Stacked & Strong",rest:"2 min rest",ex:[["DB Bulgarian Split Squats","3×5"],["Front Squats","5@50%\n3×5@55%"]]},
+    {name:"Jacked & Big",rest:"2 min rest",ex:[["Slow Strict Pullups (SS)","4×2–5 reps"],["DB Rear Lateral Raise (SS)","4×10"],["BB Bent Over Rows","4×5"]]},
+    {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Kickbacks (SS)","3×15"],["DB Bicep Concentration Curls (SS)","3×15"]]},
+    {name:"Cardio",rest:"2 min",ex:[["BB Zercher Squats","2×10"]]}
+  ]}
+];
+
+const CHECKLIST_ITEMS=[
+  "Ate meal 1 before 9am",
+  "Ate meal 2 at lunch",
+  "Ate meal 3 before 7pm",
+  "Hit 162g protein today",
+  "No food after 8pm",
+  "Drank 3L+ water",
+  "Completed training session",
+  "Did 20-min incline walk",
+  "Asleep by 11pm — phone down"
+];
+
+// ---- STORAGE ----
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
+
+let sessions=load('sessions',{done:7,cells:Array(24).fill(0).map((_,i)=>i<7?1:0)});
+let logHistory=load('logHistory',[]);
+let checkData=load('checkData',{});
+
+// ---- UTILS ----
+function todayKey(){const d=new Date();return d.toISOString().slice(0,10)}
+function formatDate(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
+function todayFull(){return new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
+
+// ---- SCREENS ----
+function showScreen(id,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(id==='streak')renderStreak();
+  if(id==='checklist')renderChecklist();
+  if(id==='home')renderHistory();
+}
+
+// ---- HOME ----
+function initHome(){
+  document.getElementById('todayDate').textContent=todayFull();
+  const nextDay=sessions.done+1;
+  document.getElementById('dayChip').textContent='Day '+nextDay+' next';
+  document.getElementById('programDay').textContent=sessions.done;
+
+  const today=todayKey();
+  const todayLog=logHistory.find(l=>l.date===today);
+  if(todayLog){
+    document.getElementById('todaySteps').textContent=Number(todayLog.steps).toLocaleString();
+    document.getElementById('todayCals').textContent=todayLog.cals;
+    document.getElementById('todayCardio').textContent=todayLog.cardio;
+  }
+
+  const h=new Date().getHours();
+  let msg='';
+  if(h>=21){msg="⚠️ It's past 9pm. Kitchen is closed. No food. Log your day below.";}
+  else if(h>=17){msg="Evening. Dinner window is 5–7pm. Low carb only. Log your numbers at end of day.";}
+  else if(h>=12){msg="Afternoon. Meal 2 should be done. Hit that protein. Train hard today.";}
+  else if(h>=7){msg="Morning. Meal 1 now — eggs or Greek yogurt. Start strong.";}
+  else{msg="Early start. Fasted walk option this morning. Log yesterday if you haven't.";}
+  document.getElementById('reminderBanner').textContent=msg;
+  renderHistory();
+}
+
+function saveLog(){
+  const steps=document.getElementById('inputSteps').value||'0';
+  const cals=document.getElementById('inputCals').value||'0';
+  const cardio=document.getElementById('inputCardio').value||'0';
+  const today=todayKey();
+  logHistory=logHistory.filter(l=>l.date!==today);
+  logHistory.unshift({date:today,steps,cals,cardio});
+  if(logHistory.length>30)logHistory=logHistory.slice(0,30);
+  save('logHistory',logHistory);
+  document.getElementById('todaySteps').textContent=Number(steps).toLocaleString();
+  document.getElementById('todayCals').textContent=cals;
+  document.getElementById('todayCardio').textContent=cardio;
+  document.getElementById('inputSteps').value='';
+  document.getElementById('inputCals').value='';
+  document.getElementById('inputCardio').value='';
+  showToast('Day logged ✓');
+  renderHistory();
+}
+
+function renderHistory(){
+  const el=document.getElementById('historyList');
+  if(!logHistory.length){el.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No entries yet — log your first day above</div>';return;}
+  el.innerHTML=logHistory.slice(0,7).map(l=>`
+    <div class="history-row">
+      <span class="history-date">${formatDate(l.date)}</span>
+      <div class="history-stats">
+        <div class="history-stat"><div class="history-stat-val">${Number(l.steps).toLocaleString()}</div><div class="history-stat-label">steps</div></div>
+        <div class="history-stat"><div class="history-stat-val">${l.cals}</div><div class="history-stat-label">kcal</div></div>
+        <div class="history-stat"><div class="history-stat-val">${l.cardio}m</div><div class="history-stat-label">cardio</div></div>
+      </div>
+    </div>`).join('');
+}
+
+// ---- STREAK ----
+function renderStreak(){
+  const grid=document.getElementById('streakGrid');
+  grid.innerHTML='';
+  sessions.cells.forEach((done,i)=>{
+    const cell=document.createElement('div');
+    const dayNum=i+1;
+    const isNext=i===sessions.done;
+    cell.className='streak-cell'+(done?' done':isNext?' today-cell':'');
+    cell.textContent=dayNum;
+    cell.title='Day '+dayNum;
+    cell.onclick=()=>toggleSession(i);
+    grid.appendChild(cell);
+  });
+  const done=sessions.cells.filter(Boolean).length;
+  document.getElementById('doneCount').textContent=done;
+  document.getElementById('remainCount').textContent=24-done;
+  const pct=Math.round(done/24*100);
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('mainProgressBar').style.width=pct+'%';
+}
+
+function toggleSession(i){
+  sessions.cells[i]=sessions.cells[i]?0:1;
+  sessions.done=sessions.cells.filter(Boolean).length;
+  save('sessions',sessions);
+  renderStreak();
+  if(sessions.cells[i])showToast('Day '+(i+1)+' complete ✓');
+}
+
+function markNextSession(){
+  const next=sessions.cells.findIndex(v=>!v);
+  if(next===-1){showToast('All 24 sessions done! Beast.');return;}
+  toggleSession(next);
+}
+
+// ---- PROGRAM ----
+function initProgram(){
+  const tabs=document.getElementById('dayTabs');
+  tabs.innerHTML=DAYS_DATA.map((d,i)=>`<button class="day-tab${i===0?' active':''}" onclick="selectDay(${i},this)">${d.name}<br><span style="font-size:10px;font-weight:400;opacity:0.7">${d.day}</span></button>`).join('');
+  renderDay(0);
+}
+
+function selectDay(i,el){
+  document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderDay(i);
+}
+
+function renderDay(i){
+  const d=DAYS_DATA[i];
+  let html=d.blocks.map(b=>`
+    <div class="block-card">
+      <div class="block-header"><span class="block-name">${b.name}</span><span class="block-rest">${b.rest}</span></div>
+      ${b.ex.map(e=>`<div class="ex-row"><span class="ex-name">${e[0]}</span><span class="ex-sets">${e[1]}</span></div>`).join('')}
+    </div>`).join('');
+  html+=`<div class="rule-card mandatory" style="margin-top:4px"><div class="rule-header"><span class="rule-time">POST-LIFT</span> Incline walk</div><div class="rule-body">20 min · 15% incline · 2.5–3 mph. Every session. No skipping.</div></div>`;
+  document.getElementById('programContent').innerHTML=html;
+}
+
+// ---- CHECKLIST ----
+function renderChecklist(){
+  document.getElementById('checkDate').textContent=todayFull();
+  const key=todayKey();
+  const saved=checkData[key]||{};
+  const list=document.getElementById('checkList');
+  list.innerHTML=CHECKLIST_ITEMS.map((item,i)=>{
+    const checked=!!saved[i];
+    return `<div class="check-item${checked?' checked-item':''}" onclick="toggleCheck(${i})">
+      <div class="check-box${checked?' checked':''}">${checked?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
+      <span class="check-text">${item}</span>
+    </div>`;
+  }).join('');
+  updateCheckProgress();
+}
+
+function toggleCheck(i){
+  const key=todayKey();
+  if(!checkData[key])checkData[key]={};
+  checkData[key][i]=!checkData[key][i];
+  save('checkData',checkData);
+  renderChecklist();
+}
+
+function updateCheckProgress(){
+  const key=todayKey();
+  const saved=checkData[key]||{};
+  const done=Object.values(saved).filter(Boolean).length;
+  const pct=Math.round(done/CHECKLIST_ITEMS.length*100);
+  document.getElementById('checkProgress').style.width=pct+'%';
+  document.getElementById('checkCount').textContent=done+' / '+CHECKLIST_ITEMS.length;
+  document.getElementById('checkPct').textContent=pct+'%';
+  const msg=document.getElementById('checkMsg');
+  if(pct===100)msg.innerHTML='<span style="color:var(--green)">Perfect day. This is exactly what body recomp looks like. Repeat tomorrow.</span>';
+  else if(pct>=78)msg.innerHTML='<span style="color:#a0ffd1">Solid. Finish the last boxes — especially the 8pm cutoff.</span>';
+  else if(pct>=44)msg.innerHTML='<span style="color:var(--amber)">Halfway. Nutrition boxes are the priority right now.</span>';
+  else msg.innerHTML='Get moving. Meal timing is everything.';
+}
+
+// ---- TOAST ----
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ---- REMINDER CHECK ----
+function checkReminder(){
+  const h=new Date().getHours();
+  const key='reminded-'+todayKey();
+  if(h>=21&&!load(key,false)){
+    save(key,true);
+    setTimeout(()=>showToast('⏰ 9pm — Log your steps & calories!'),1000);
+  }
+}
+
+// ---- INIT ----
+initHome();
+initProgram();
+checkReminder();
+</script>
+</body>
+</html>
