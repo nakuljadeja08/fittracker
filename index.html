@@ -5,154 +5,201 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="FitTracker">
-<meta name="theme-color" content="#0a0a0a">
-<title>FitTracker</title>
+<meta name="apple-mobile-web-app-title" content="Saiyan Fit">
+<meta name="theme-color" content="#0d0010">
+<title>Saiyan Fit</title>
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0a0a;
-  --surface:#141414;
-  --surface2:#1e1e1e;
-  --surface3:#282828;
-  --green:#00ff87;
-  --green-dim:#00c96a;
-  --green-dark:#003d21;
-  --red:#ff4444;
-  --amber:#ffb830;
-  --text:#f0f0f0;
-  --text-muted:#888;
-  --text-dim:#555;
-  --border:#2a2a2a;
+  --bg:#0d0010;
+  --bg2:#130018;
+  --surface:#1a0022;
+  --surface2:#220030;
+  --surface3:#2d003f;
+  --gold:#f5c518;
+  --gold-dim:#c49a10;
+  --gold-dark:#2a1f00;
+  --purple:#8b00ff;
+  --purple-dim:#6200b3;
+  --purple-light:#c084fc;
+  --purple-glow:#4a0080;
+  --blue:#00aaff;
+  --text:#f0e6ff;
+  --text-muted:#9b7bb8;
+  --text-dim:#5a3f70;
+  --border:#3d0055;
   --radius:14px;
   --radius-sm:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow:hidden}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden}
 .app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:430px;margin:0 auto;position:relative}
 
+/* ANIMATED BG */
+.bg-aura{position:fixed;top:0;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;pointer-events:none;z-index:0;overflow:hidden}
+.bg-aura::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 20%,rgba(139,0,255,0.15) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(245,197,24,0.08) 0%,transparent 50%);animation:aura 4s ease-in-out infinite alternate}
+@keyframes aura{0%{opacity:0.6;transform:scale(1)}100%{opacity:1;transform:scale(1.05)}}
+
+/* LIGHTNING */
+.lightning{position:fixed;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,transparent 0%,var(--gold) 20%,transparent 40%,var(--purple) 60%,transparent 80%);opacity:0.3;animation:lightning 2s ease-in-out infinite;pointer-events:none;z-index:0}
+@keyframes lightning{0%,100%{opacity:0.1;transform:scaleY(0.8)}50%{opacity:0.4;transform:scaleY(1)}}
+
 /* NAV */
-.nav{display:flex;background:var(--surface);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));flex-shrink:0}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--text-dim);cursor:pointer;padding:6px 4px;font-family:'Syne',sans-serif;font-size:10px;font-weight:500;transition:color 0.2s}
-.nav-btn.active{color:var(--green)}
+.nav{display:flex;background:var(--surface);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));flex-shrink:0;position:relative;z-index:10}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--text-dim);cursor:pointer;padding:6px 4px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;transition:color 0.2s;letter-spacing:0.05em}
+.nav-btn.active{color:var(--gold)}
 .nav-btn svg{width:22px;height:22px;stroke-width:1.8}
 
 /* SCREENS */
-.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:env(safe-area-inset-top,20px) 16px 16px;display:none;scrollbar-width:none}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:env(safe-area-inset-top,20px) 16px 16px;display:none;position:relative;z-index:1;scrollbar-width:none}
 .screen::-webkit-scrollbar{display:none}
 .screen.active{display:block}
 
 /* HEADER */
 .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-top:8px}
-.header-title{font-size:28px;font-weight:800;line-height:1}
-.header-sub{font-size:13px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace}
-.date-chip{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace}
+.header-title{font-family:'Bangers',cursive;font-size:36px;line-height:1;letter-spacing:2px;background:linear-gradient(135deg,var(--gold) 0%,#fff176 50%,var(--gold-dim) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 0 8px rgba(245,197,24,0.4))}
+.header-sub{font-size:12px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace;letter-spacing:0.05em}
+.power-chip{background:linear-gradient(135deg,var(--gold-dark),var(--surface3));border:1px solid var(--gold-dim);border-radius:999px;padding:6px 14px;font-family:'Bangers',cursive;font-size:16px;color:var(--gold);letter-spacing:1px;filter:drop-shadow(0 0 6px rgba(245,197,24,0.3))}
 
 /* BANNER */
-.banner{background:var(--green-dark);border:1px solid var(--green-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:#a0ffd1}
+.banner{background:linear-gradient(135deg,var(--surface2),var(--purple-glow));border:1px solid var(--purple-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;line-height:1.6;color:var(--purple-light);position:relative;overflow:hidden}
+.banner::before{content:'⚡';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:28px;opacity:0.3}
 
 /* STAT CARDS */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.stat-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:14px;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:var(--purple-dim)}
 .stat-label{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em}
-.stat-val{font-size:26px;font-weight:700;line-height:1}
-.stat-unit{font-size:12px;color:var(--text-muted);font-weight:400}
-.stat-card.accent{background:var(--green-dark);border-color:var(--green-dim)}
-.stat-card.accent .stat-val{color:var(--green)}
+.stat-val{font-size:26px;font-weight:700;line-height:1;font-family:'Bangers',cursive;letter-spacing:1px}
+.stat-unit{font-size:12px;color:var(--text-muted);font-weight:400;font-family:'Rajdhani',sans-serif}
+.stat-card.accent{background:linear-gradient(135deg,var(--gold-dark),#1a1200);border-color:var(--gold-dim)}
+.stat-card.accent::after{background:var(--gold)}
+.stat-card.accent .stat-val{color:var(--gold)}
 
-/* LOG INPUT */
-.log-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px}
-.log-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.log-title .dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+/* LOG */
+.log-section{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;position:relative;overflow:hidden}
+.log-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--gold),var(--purple))}
+.log-title{font-family:'Bangers',cursive;font-size:20px;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;color:var(--gold)}
 .log-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .log-row:last-child{margin-bottom:0}
-.log-label{font-size:13px;color:var(--text-muted);width:100px;flex-shrink:0}
-.log-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:16px;font-family:'Syne',sans-serif;outline:none;-webkit-appearance:none}
-.log-input:focus{border-color:var(--green-dim)}
+.log-label{font-size:13px;color:var(--text-muted);width:100px;flex-shrink:0;font-weight:600}
+.log-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-size:16px;font-family:'Rajdhani',sans-serif;outline:none;-webkit-appearance:none}
+.log-input:focus{border-color:var(--gold-dim);box-shadow:0 0 8px rgba(245,197,24,0.2)}
 .log-unit{font-size:12px;color:var(--text-dim);width:40px;text-align:right;font-family:'Space Mono',monospace}
-.save-btn{width:100%;background:var(--green);color:#000;border:none;border-radius:var(--radius-sm);padding:14px;font-size:15px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;margin-top:14px;letter-spacing:0.02em;transition:opacity 0.2s}
+.save-btn{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:var(--radius-sm);padding:14px;font-size:16px;font-weight:700;font-family:'Bangers',cursive;cursor:pointer;margin-top:14px;letter-spacing:2px;transition:opacity 0.2s;position:relative;overflow:hidden}
 .save-btn:active{opacity:0.8}
 
 /* HISTORY */
 .history-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
 .history-row:last-child{border-bottom:none}
-.history-date{color:var(--text-muted);font-family:'Space Mono',monospace;font-size:12px}
-.history-stats{display:flex;gap:16px}
+.history-date{color:var(--text-muted);font-family:'Space Mono',monospace;font-size:11px}
+.history-stats{display:flex;gap:14px}
 .history-stat{text-align:right}
-.history-stat-val{font-weight:600;font-size:14px}
-.history-stat-label{font-size:11px;color:var(--text-dim)}
+.history-stat-val{font-weight:700;font-size:14px;color:var(--gold)}
+.history-stat-label{font-size:10px;color:var(--text-dim)}
 
 /* STREAK */
-.streak-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}
-.streak-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Space Mono',monospace;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);transition:all 0.15s;user-select:none}
-.streak-cell.done{background:var(--green);border-color:var(--green);color:#000}
-.streak-cell.today-cell{border-color:var(--green-dim);color:var(--green)}
-.streak-cell.rest{background:var(--surface2);color:var(--text-dim)}
+.streak-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:20px}
+.streak-cell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'Bangers',cursive;letter-spacing:0.5px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);transition:all 0.15s;user-select:none}
+.streak-cell.done{background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-color:var(--gold);color:#000;box-shadow:0 0 10px rgba(245,197,24,0.4)}
+.streak-cell.today-cell{border-color:var(--purple);color:var(--purple-light);box-shadow:0 0 8px rgba(139,0,255,0.4)}
+.streak-cell:active{transform:scale(0.92)}
+
+/* VEGETA PANEL */
+.vegeta-panel{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:16px;border:1px solid var(--purple-dim);background:linear-gradient(135deg,var(--bg2),var(--purple-glow))}
+.vegeta-quote{padding:16px;font-family:'Bangers',cursive;font-size:22px;letter-spacing:1.5px;line-height:1.3;color:var(--gold);filter:drop-shadow(0 0 8px rgba(245,197,24,0.5));position:relative;z-index:2}
+.vegeta-sub{font-family:'Rajdhani',sans-serif;font-size:13px;color:var(--purple-light);font-weight:500;margin-top:4px}
+.power-bar-label{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;margin-top:4px}
+
+/* POWER LEVEL */
+.power-level{background:var(--bg2);border-radius:999px;height:10px;overflow:hidden;margin-bottom:4px;border:1px solid var(--border)}
+.power-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--gold));transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);position:relative}
+.power-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:#fff;border-radius:999px;opacity:0.8;animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
 
 /* PROGRAM */
 .day-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .day-tabs::-webkit-scrollbar{display:none}
-.day-tab{flex-shrink:0;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;font-family:'Syne',sans-serif;transition:all 0.15s}
-.day-tab.active{background:var(--green);color:#000;border-color:var(--green)}
-.block-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px}
-.block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.block-name{font-size:13px;font-weight:700;color:var(--green)}
+.day-tab{flex-shrink:0;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;font-family:'Rajdhani',sans-serif;transition:all 0.15s;letter-spacing:0.5px}
+.day-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border-color:var(--gold);font-family:'Bangers',cursive;font-size:15px;letter-spacing:1px}
+.block-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
+.block-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--gold),var(--purple))}
+.block-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-left:8px}
+.block-name{font-family:'Bangers',cursive;font-size:16px;color:var(--gold);letter-spacing:1px}
 .block-rest{font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace}
-.ex-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-top:1px solid var(--border)}
-.ex-name{font-size:13px;font-weight:600;flex:1;padding-right:8px;line-height:1.4}
-.ex-sets{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;text-align:right;flex-shrink:0;line-height:1.4}
+.ex-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0 8px 8px;border-top:1px solid var(--border)}
+.ex-name{font-size:13px;font-weight:600;flex:1;padding-right:8px;line-height:1.4;color:var(--text)}
+.ex-sets{font-size:11px;color:var(--gold-dim);font-family:'Space Mono',monospace;text-align:right;flex-shrink:0;line-height:1.4}
 
 /* NUTRITION */
-.rule-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
-.rule-card.forbidden{border-color:#3d1515}
-.rule-card.mandatory{border-color:var(--green-dark)}
-.rule-header{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.rule-time{font-family:'Space Mono',monospace;font-size:11px;color:var(--green);background:var(--green-dark);padding:2px 8px;border-radius:999px}
-.rule-time.red{color:#ff8080;background:#3d1515}
-.rule-body{font-size:13px;color:var(--text-muted);line-height:1.6}
+.rule-card{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden}
+.rule-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--gold))}
+.rule-card.forbidden::before{background:linear-gradient(90deg,#ff2244,#660011)}
+.rule-card.forbidden{border-color:#440011}
+.rule-card.mandatory::before{background:linear-gradient(90deg,var(--gold),var(--purple))}
+.rule-card.mandatory{border-color:var(--gold-dark)}
+.rule-header{font-family:'Bangers',cursive;font-size:17px;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.rule-time{font-family:'Space Mono',monospace;font-size:11px;color:#000;background:var(--gold);padding:2px 8px;border-radius:999px;font-weight:700}
+.rule-time.red{color:#fff;background:#880022}
+.rule-body{font-size:13px;color:var(--text-muted);line-height:1.6;font-weight:500}
 
 /* CHECKLIST */
 .check-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
 .check-item:last-child{border-bottom:none}
-.check-box{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
-.check-box.checked{background:var(--green);border-color:var(--green)}
-.check-text{font-size:14px;flex:1;line-height:1.4}
-.check-item.checked-item .check-text{color:var(--text-muted);text-decoration:line-through}
-.progress-wrap{background:var(--surface2);border-radius:999px;height:6px;margin:16px 0 8px;overflow:hidden}
-.progress-fill{height:100%;background:var(--green);border-radius:999px;transition:width 0.3s}
+.check-box{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:var(--surface)}
+.check-box.checked{background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-color:var(--gold);box-shadow:0 0 8px rgba(245,197,24,0.4)}
+.check-text{font-size:14px;flex:1;line-height:1.4;font-weight:600}
+.check-item.checked-item .check-text{color:var(--text-dim);text-decoration:line-through}
+.progress-wrap{background:var(--surface2);border-radius:999px;height:8px;margin:16px 0 8px;overflow:hidden;border:1px solid var(--border)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--gold));border-radius:999px;transition:width 0.4s cubic-bezier(0.34,1.56,0.64,1)}
 .prog-info{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-bottom:16px}
 
-/* REMINDER TOAST */
-.toast{position:fixed;top:env(safe-area-inset-top,20px);left:50%;transform:translateX(-50%) translateY(-100px);background:var(--amber);color:#000;border-radius:var(--radius);padding:12px 20px;font-size:14px;font-weight:700;z-index:999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);max-width:360px;width:90%;text-align:center}
+/* TOAST */
+.toast{position:fixed;top:env(safe-area-inset-top,20px);left:50%;transform:translateX(-50%) translateY(-120px);background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border-radius:var(--radius);padding:12px 20px;font-size:15px;font-weight:700;font-family:'Bangers',cursive;letter-spacing:1.5px;z-index:999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);max-width:360px;width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 /* SECTION LABEL */
-.section-label{font-size:11px;font-weight:700;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;font-family:'Space Mono',monospace;margin:20px 0 10px}
+.section-label{font-family:'Bangers',cursive;font-size:14px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
 
-/* WEEK LABEL ROW */
-.week-label-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px}
+/* WEEK ROW */
+.week-label-row{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:6px}
 .week-label{text-align:center;font-size:10px;color:var(--text-dim);font-family:'Space Mono',monospace}
+
+/* DRAGON BALLS ROW */
+.dragonballs{display:flex;gap:8px;justify-content:center;margin:12px 0;font-size:22px;filter:drop-shadow(0 0 6px rgba(245,197,24,0.5))}
+
+/* CARDIO REMINDER CARD */
+.cardio-reminder{background:linear-gradient(135deg,#001a33,#000d1a);border:1px solid #003366;border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;font-size:13px;color:#80ccff;line-height:1.6}
+.cardio-reminder strong{color:var(--blue);font-family:'Bangers',cursive;font-size:16px;letter-spacing:1px}
 </style>
 </head>
 <body>
-<div class="app">
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+<div class="bg-aura"></div>
+<div class="lightning"></div>
 
-  <!-- SCREENS -->
+<div class="app">
+  <div class="toast" id="toast"></div>
 
   <!-- HOME -->
   <div class="screen active" id="screen-home">
     <div class="header">
       <div>
-        <div class="header-title">FitTracker</div>
+        <div class="header-title">SAIYAN FIT</div>
         <div class="header-sub" id="todayDate"></div>
       </div>
-      <div class="date-chip" id="dayChip">Day 8</div>
+      <div class="power-chip" id="dayChip">DAY 8 NEXT</div>
+    </div>
+
+    <div class="vegeta-panel">
+      <div class="vegeta-quote" id="motivQuote">PUSH PAST YOUR LIMITS!</div>
+      <div class="vegeta-sub" id="motivSub">— Vegeta, Prince of all Saiyans</div>
+      <div style="padding:0 16px 16px">
+        <div class="power-bar-label">Program power level — <span id="powerPct">29</span>%</div>
+        <div class="power-level"><div class="power-fill" id="powerBar" style="width:29%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:4px"><span>Day 1</span><span id="doneLabel">7 / 24 sessions</span></div>
+      </div>
     </div>
 
     <div class="banner" id="reminderBanner"></div>
@@ -164,21 +211,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
       </div>
       <div class="stat-card">
         <div class="stat-label">Cal burned</div>
-        <div class="stat-val" id="todayCals">—<span class="stat-unit"></span></div>
+        <div class="stat-val" id="todayCals">—</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Cardio</div>
         <div class="stat-val" id="todayCardio">—<span class="stat-unit"> min</span></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Program day</div>
-        <div class="stat-val" id="programDay">8</div>
+        <div class="stat-label">Sessions done</div>
+        <div class="stat-val" id="sessionsDone">7</div>
       </div>
     </div>
 
-    <div class="section-label">Log today's numbers</div>
+    <div class="section-label">End of Day Log</div>
     <div class="log-section">
-      <div class="log-title"><span class="dot"></span>End of day log</div>
+      <div class="log-title">⚡ LOG YOUR POWER</div>
       <div class="log-row">
         <span class="log-label">Steps</span>
         <input type="number" class="log-input" id="inputSteps" placeholder="0" inputmode="numeric">
@@ -194,12 +241,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
         <input type="number" class="log-input" id="inputCardio" placeholder="0" inputmode="numeric">
         <span class="log-unit">min</span>
       </div>
-      <button class="save-btn" onclick="saveLog()">Save day →</button>
+      <button class="save-btn" onclick="saveLog()">POWER UP — SAVE DAY →</button>
     </div>
 
-    <div class="section-label">Recent history</div>
+    <div class="section-label">Battle History</div>
     <div class="log-section" style="padding:4px 16px">
-      <div id="historyList"><div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No entries yet — log your first day above</div></div>
+      <div id="historyList"><div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No entries yet. Log your first day.</div></div>
     </div>
   </div>
 
@@ -207,14 +254,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
   <div class="screen" id="screen-streak">
     <div class="header">
       <div>
-        <div class="header-title">Streak</div>
-        <div class="header-sub">PPSA program — 24 sessions</div>
+        <div class="header-title">STREAK</div>
+        <div class="header-sub">PPSA — 24 SESSION CAMPAIGN</div>
       </div>
     </div>
 
     <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
       <div class="stat-card accent">
-        <div class="stat-label">Done</div>
+        <div class="stat-label">Conquered</div>
         <div class="stat-val" id="doneCount">7</div>
       </div>
       <div class="stat-card">
@@ -222,28 +269,27 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
         <div class="stat-val" id="remainCount">17</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Progress</div>
+        <div class="stat-label">Power</div>
         <div class="stat-val" id="progPct">29<span class="stat-unit">%</span></div>
       </div>
     </div>
 
-    <div class="progress-wrap" style="margin:0 0 20px">
-      <div class="progress-fill" id="mainProgressBar" style="width:29%"></div>
+    <div class="power-level" style="margin-bottom:20px">
+      <div class="power-fill" id="mainProgressBar" style="width:29%"></div>
     </div>
 
-    <div class="section-label">Tap a session to mark complete</div>
+    <div class="dragonballs" id="dragonBalls"></div>
 
+    <div class="section-label">Tap session to mark complete</div>
     <div class="week-label-row">
-      <div class="week-label">W1</div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div>
-      <div class="week-label">W2</div><div class="week-label"></div><div class="week-label"></div>
+      <div class="week-label">W1</div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div><div class="week-label"></div>
     </div>
     <div class="streak-grid" id="streakGrid"></div>
 
-    <div class="section-label">Today's workout</div>
-    <div class="log-section" style="padding:14px 16px">
-      <div class="log-title"><span class="dot"></span>Mark session done</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">You're on Day 8 tomorrow. Tap the session in the grid above or use the button below after completing your workout.</div>
-      <button class="save-btn" onclick="markNextSession()">Mark next session complete →</button>
+    <div class="log-section" style="margin-top:8px">
+      <div class="log-title">⚡ MARK SESSION DONE</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6;font-weight:500">You're on Day 8 next. Tap a cell above or hit the button below after completing your session.</div>
+      <button class="save-btn" onclick="markNextSession()">COMPLETE NEXT SESSION →</button>
     </div>
   </div>
 
@@ -251,8 +297,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
   <div class="screen" id="screen-program">
     <div class="header">
       <div>
-        <div class="header-title">Program</div>
-        <div class="header-sub">PPSA — Stacked, Jacked & Turning Heads II</div>
+        <div class="header-title">PROGRAM</div>
+        <div class="header-sub">PPSA — STACKED, JACKED & TURNING HEADS II</div>
       </div>
     </div>
     <div class="day-tabs" id="dayTabs"></div>
@@ -263,52 +309,52 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
   <div class="screen" id="screen-nutrition">
     <div class="header">
       <div>
-        <div class="header-title">Nutrition</div>
-        <div class="header-sub">Non-negotiable rules</div>
+        <div class="header-title">NUTRITION</div>
+        <div class="header-sub">SAIYAN FEEDING PROTOCOL</div>
       </div>
     </div>
 
     <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">7–9am</span> Meal 1 — Breakfast</div>
-      <div class="rule-body">4–6 eggs or 1 cup Greek yogurt + fruit. High protein start. This meal wakes up your metabolism. Skip it and your body stores fat all day.</div>
+      <div class="rule-header"><span class="rule-time">7–9am</span> MEAL 1 — BREAKFAST</div>
+      <div class="rule-body">4–6 eggs or 1 cup Greek yogurt + fruit. High protein start. Skip it and your body stores fat all day. Non-negotiable.</div>
     </div>
     <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">12–1pm</span> Meal 2 — Lunch</div>
-      <div class="rule-body">6–8oz chicken or fish + rice or sweet potato + vegetables. This is your biggest meal. Carbs here — not at night.</div>
+      <div class="rule-header"><span class="rule-time">12–1pm</span> MEAL 2 — LUNCH</div>
+      <div class="rule-body">6–8oz chicken or fish + rice or sweet potato + vegetables. Your biggest meal. Carbs here — not at night.</div>
     </div>
     <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">5–7pm</span> Meal 3 — Dinner</div>
-      <div class="rule-body">6oz protein + vegetables only. No rice, no bread, no pasta. Low carb at night. Done eating by 7pm max.</div>
+      <div class="rule-header"><span class="rule-time">5–7pm</span> MEAL 3 — DINNER</div>
+      <div class="rule-body">6oz protein + vegetables only. No rice, no bread, no pasta. Low carb. Done by 7pm maximum.</div>
     </div>
     <div class="rule-card forbidden">
-      <div class="rule-header"><span class="rule-time red">8pm CUTOFF</span> Kitchen is closed</div>
-      <div class="rule-body">Water and black coffee only. No exceptions. No "just this once." Late eating spikes insulin overnight — that's exactly where your side fat comes from.</div>
+      <div class="rule-header"><span class="rule-time red">8pm CUTOFF</span> KITCHEN CLOSED</div>
+      <div class="rule-body">Water and black coffee only. Zero exceptions. Late eating spikes insulin overnight — that's exactly where your side fat comes from.</div>
     </div>
 
-    <div class="section-label">Daily protein target</div>
-    <div class="stat-card" style="margin-bottom:16px">
-      <div class="stat-label">Target — 1g per lb bodyweight</div>
-      <div class="stat-val" style="color:var(--green)">162<span class="stat-unit">g protein / day</span></div>
+    <div class="section-label">Daily Protein Target</div>
+    <div class="stat-card accent" style="margin-bottom:16px">
+      <div class="stat-label">1g per lb bodyweight — every single day</div>
+      <div class="stat-val" style="color:var(--gold)">162<span class="stat-unit">g protein / day</span></div>
     </div>
 
-    <div class="section-label">Never touch these</div>
+    <div class="section-label">Forbidden Foods</div>
     <div class="rule-card forbidden">
-      <div class="rule-header"><span class="rule-time red">BANNED</span> Liquid calories</div>
-      <div class="rule-body">Juice, soda, alcohol, flavored coffee drinks. Water, black coffee, green tea only.</div>
+      <div class="rule-header"><span class="rule-time red">BANNED</span> LIQUID CALORIES</div>
+      <div class="rule-body">Juice, soda, alcohol, flavored coffees. Water, black coffee, green tea only.</div>
     </div>
     <div class="rule-card forbidden">
-      <div class="rule-header"><span class="rule-time red">BANNED</span> Carbs after 5pm</div>
-      <div class="rule-body">White rice, bread, pasta, snacks. All carbs go in meal 1 and 2 only.</div>
+      <div class="rule-header"><span class="rule-time red">BANNED</span> CARBS AFTER 5PM</div>
+      <div class="rule-body">White rice, bread, pasta. All carbs in meal 1 and 2 only.</div>
     </div>
 
-    <div class="section-label">Cardio rules</div>
-    <div class="rule-card mandatory">
-      <div class="rule-header"><span class="rule-time">POST-LIFT</span> Incline walk</div>
-      <div class="rule-body">20 min. 15% incline. 2.5–3 mph. Every single session. Non-negotiable.</div>
+    <div class="section-label">Cardio Protocol</div>
+    <div class="cardio-reminder">
+      <strong>POST-LIFT INCLINE WALK</strong><br>
+      20 min · 15% incline · 2.5–3 mph · Every session · No skipping.
     </div>
-    <div class="rule-card">
-      <div class="rule-header"><span class="rule-time" style="color:var(--amber);background:#3d2a00">WEEKLY</span> Fasted walk</div>
-      <div class="rule-body">Saturday or Sunday morning — before eating. 30 min easy walk. Targets stubborn oblique fat directly.</div>
+    <div class="cardio-reminder">
+      <strong>WEEKLY FASTED WALK</strong><br>
+      Saturday or Sunday morning — before eating. 30 min easy walk. Targets stubborn oblique fat directly.
     </div>
   </div>
 
@@ -316,7 +362,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
   <div class="screen" id="screen-checklist">
     <div class="header">
       <div>
-        <div class="header-title">Daily check</div>
+        <div class="header-title">DAILY CHECK</div>
         <div class="header-sub" id="checkDate"></div>
       </div>
     </div>
@@ -328,60 +374,59 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',
       <span id="checkPct">0%</span>
     </div>
     <div id="checkList"></div>
-    <div id="checkMsg" style="margin-top:16px;font-size:13px;line-height:1.6;color:var(--text-muted);min-height:40px"></div>
+    <div id="checkMsg" style="margin-top:16px;font-size:14px;line-height:1.6;color:var(--text-muted);font-weight:600;font-family:'Bangers',cursive;letter-spacing:1px;font-size:18px;min-height:40px"></div>
   </div>
 
   <!-- NAV -->
   <nav class="nav">
     <button class="nav-btn active" onclick="showScreen('home',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Home
+      HOME
     </button>
     <button class="nav-btn" onclick="showScreen('streak',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      Streak
+      STREAK
     </button>
     <button class="nav-btn" onclick="showScreen('program',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      Program
+      PROGRAM
     </button>
     <button class="nav-btn" onclick="showScreen('nutrition',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-      Nutrition
+      FUEL
     </button>
     <button class="nav-btn" onclick="showScreen('checklist',this)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      Checklist
+      BATTLE
     </button>
   </nav>
 </div>
 
 <script>
-// ---- DATA ----
 const DAYS_DATA=[
   {name:"Day 1",day:"Mon",blocks:[
     {name:"Stacked & Strong",rest:"2.5–3 min rest",ex:[["Bench Press","10@50%, 5@65%\n5@70%, 5@75%\n10@60%, 10@60%"],["Deadlift","5@65%, 5@70%\n5@75%, 5@75%"]]},
     {name:"Jacked & Big",rest:"2 min rest",ex:[["BB Overhead Press (SS)","3×10"],["DB Lateral Iso Hold (SS)","3×30 sec"],["Close Grip Bench","4×5 @60–65%"]]},
     {name:"Turning Heads",rest:"1.5–2 min",ex:[["EZ Bar Skullcrushers (SS)","3×15"],["BB Bicep 21s (SS)","3×21"]]},
-    {name:"Cardio",rest:"minimal",ex:[["DB Rear Laterals (SS)","3×10"],["DB Shrugs (SS)","3×20"]]}
+    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Rear Laterals (SS)","3×10"],["DB Shrugs (SS)","3×20"]]}
   ]},
   {name:"Day 2",day:"Tue",blocks:[
     {name:"Stacked & Strong",rest:"2.5–3 min rest",ex:[["Back Squat","10@56%, 5@65%\n4×2@80%"],["One Arm DB Rows (SS)","4×5"],["DB RDLs (SS)","4×10"]]},
     {name:"Jacked & Big",rest:"2 min rest",ex:[["Slow Strict Chin Up (SS)","4×2–5 reps"],["DB Pullover (SS)","4×5"]]},
     {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Tate Press (SS)","4×15"],["DB Biceps Zottman Curls (SS)","4×10"]]},
-    {name:"Cardio",rest:"minimal",ex:[["DB Walking Lunges","3×5 steps/leg"]]}
+    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Walking Lunges","3×5 steps/leg"]]}
   ]},
   {name:"Day 3",day:"Thu",blocks:[
     {name:"Stacked & Strong",rest:"2 min rest",ex:[["Bench Press","5@65%, 5@73%\n3×3@80%, 10@60%"],["Snatch Grip Deadlift","4×5 @50–62%"],["DB Incline Press","10–5–5"]]},
     {name:"Jacked & Big",rest:"1.5–2 min",ex:[["Seated DB Arnold Press","3×10"],["DB Lateral Raise (SS)","3×10"],["DB Front Raise (SS)","3×10"]]},
     {name:"Turning Heads",rest:"1.5 min",ex:[["Cable Triceps Pushdowns (SS)","3×15"],["Close Grip Pushups (SS)","3×10"]]},
-    {name:"Cardio",rest:"minimal",ex:[["DB Bicep Hammer Curls","4×20"]]}
+    {name:"Cardio Finisher",rest:"minimal",ex:[["DB Bicep Hammer Curls","4×20"]]}
   ]},
   {name:"Day 4",day:"Fri",blocks:[
     {name:"Stacked & Strong",rest:"2 min rest",ex:[["DB Bulgarian Split Squats","3×5"],["Front Squats","5@50%\n3×5@55%"]]},
     {name:"Jacked & Big",rest:"2 min rest",ex:[["Slow Strict Pullups (SS)","4×2–5 reps"],["DB Rear Lateral Raise (SS)","4×10"],["BB Bent Over Rows","4×5"]]},
     {name:"Turning Heads",rest:"1.5 min",ex:[["DB Triceps Kickbacks (SS)","3×15"],["DB Bicep Concentration Curls (SS)","3×15"]]},
-    {name:"Cardio",rest:"2 min",ex:[["BB Zercher Squats","2×10"]]}
+    {name:"Cardio Finisher",rest:"2 min",ex:[["BB Zercher Squats","2×10"]]}
   ]}
 ];
 
@@ -397,7 +442,16 @@ const CHECKLIST_ITEMS=[
   "Asleep by 11pm — phone down"
 ];
 
-// ---- STORAGE ----
+const QUOTES=[
+  {q:"PUSH PAST YOUR LIMITS!",s:"Vegeta, Prince of all Saiyans"},
+  {q:"EVERY DAY A SAIYAN GETS STRONGER!",s:"Train. Eat. Sleep. Repeat."},
+  {q:"OVER 9000 — YOUR POWER LEVEL CLIMBS!",s:"No late night eating. No excuses."},
+  {q:"KAKAROT WILL NOT SURPASS ME!",s:"Hit 162g protein. Every single day."},
+  {q:"I AM THE PRINCE OF ALL SAIYANS!",s:"8pm cutoff. Kitchen is closed."},
+  {q:"FINAL FLASH — ALL IN!",s:"20 min incline walk. No skipping."},
+  {q:"PRIDE OF A SAIYAN WARRIOR!",s:"3 meals before 7pm. Non-negotiable."}
+];
+
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 function load(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def}}
 
@@ -405,12 +459,10 @@ let sessions=load('sessions',{done:7,cells:Array(24).fill(0).map((_,i)=>i<7?1:0)
 let logHistory=load('logHistory',[]);
 let checkData=load('checkData',{});
 
-// ---- UTILS ----
-function todayKey(){const d=new Date();return d.toISOString().slice(0,10)}
+function todayKey(){return new Date().toISOString().slice(0,10)}
 function formatDate(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric'})}
 function todayFull(){return new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
 
-// ---- SCREENS ----
 function showScreen(id,btn){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -421,12 +473,16 @@ function showScreen(id,btn){
   if(id==='home')renderHistory();
 }
 
-// ---- HOME ----
 function initHome(){
   document.getElementById('todayDate').textContent=todayFull();
   const nextDay=sessions.done+1;
-  document.getElementById('dayChip').textContent='Day '+nextDay+' next';
-  document.getElementById('programDay').textContent=sessions.done;
+  document.getElementById('dayChip').textContent='DAY '+nextDay+' NEXT';
+  document.getElementById('sessionsDone').textContent=sessions.done;
+  updatePowerBar();
+
+  const q=QUOTES[new Date().getDay()%QUOTES.length];
+  document.getElementById('motivQuote').textContent=q.q;
+  document.getElementById('motivSub').textContent='— '+q.s;
 
   const today=todayKey();
   const todayLog=logHistory.find(l=>l.date===today);
@@ -438,13 +494,22 @@ function initHome(){
 
   const h=new Date().getHours();
   let msg='';
-  if(h>=21){msg="⚠️ It's past 9pm. Kitchen is closed. No food. Log your day below.";}
-  else if(h>=17){msg="Evening. Dinner window is 5–7pm. Low carb only. Log your numbers at end of day.";}
-  else if(h>=12){msg="Afternoon. Meal 2 should be done. Hit that protein. Train hard today.";}
-  else if(h>=7){msg="Morning. Meal 1 now — eggs or Greek yogurt. Start strong.";}
+  if(h>=21){msg="⚠️ 9PM — Kitchen closed. Log your day. No food. A true Saiyan respects the cutoff.";}
+  else if(h>=17){msg:"Evening. Dinner window 5–7pm. Low carb only. Log your numbers tonight.";}
+  else if(h>=12){msg="Afternoon. Meal 2 done? Hit that protein. Train today like a Saiyan.";}
+  else if(h>=7){msg="Morning. Meal 1 NOW. Eggs or Greek yogurt. A Saiyan fuels before battle.";}
   else{msg="Early start. Fasted walk option this morning. Log yesterday if you haven't.";}
   document.getElementById('reminderBanner').textContent=msg;
   renderHistory();
+}
+
+function updatePowerBar(){
+  const done=sessions.cells.filter(Boolean).length;
+  const pct=Math.round(done/24*100);
+  document.getElementById('powerBar').style.width=pct+'%';
+  document.getElementById('powerPct').textContent=pct;
+  document.getElementById('doneLabel').textContent=done+' / 24 sessions';
+  document.getElementById('sessionsDone').textContent=done;
 }
 
 function saveLog(){
@@ -462,13 +527,13 @@ function saveLog(){
   document.getElementById('inputSteps').value='';
   document.getElementById('inputCals').value='';
   document.getElementById('inputCardio').value='';
-  showToast('Day logged ✓');
+  showToast('POWER LOGGED ⚡');
   renderHistory();
 }
 
 function renderHistory(){
   const el=document.getElementById('historyList');
-  if(!logHistory.length){el.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No entries yet — log your first day above</div>';return;}
+  if(!logHistory.length){el.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--text-dim);font-size:13px">No battle records yet. Log your first day.</div>';return;}
   el.innerHTML=logHistory.slice(0,7).map(l=>`
     <div class="history-row">
       <span class="history-date">${formatDate(l.date)}</span>
@@ -480,17 +545,14 @@ function renderHistory(){
     </div>`).join('');
 }
 
-// ---- STREAK ----
 function renderStreak(){
   const grid=document.getElementById('streakGrid');
   grid.innerHTML='';
   sessions.cells.forEach((done,i)=>{
     const cell=document.createElement('div');
-    const dayNum=i+1;
     const isNext=i===sessions.done;
     cell.className='streak-cell'+(done?' done':isNext?' today-cell':'');
-    cell.textContent=dayNum;
-    cell.title='Day '+dayNum;
+    cell.textContent=i+1;
     cell.onclick=()=>toggleSession(i);
     grid.appendChild(cell);
   });
@@ -500,6 +562,10 @@ function renderStreak(){
   const pct=Math.round(done/24*100);
   document.getElementById('progPct').textContent=pct+'%';
   document.getElementById('mainProgressBar').style.width=pct+'%';
+  // Dragon balls — 1 per 3 sessions done, max 7
+  const balls=Math.min(7,Math.floor(done/3));
+  const dbEl=document.getElementById('dragonBalls');
+  dbEl.innerHTML=Array(7).fill(0).map((_,i)=>i<balls?'🟡':'⚫').join('');
 }
 
 function toggleSession(i){
@@ -507,19 +573,19 @@ function toggleSession(i){
   sessions.done=sessions.cells.filter(Boolean).length;
   save('sessions',sessions);
   renderStreak();
-  if(sessions.cells[i])showToast('Day '+(i+1)+' complete ✓');
+  updatePowerBar();
+  if(sessions.cells[i])showToast('SESSION '+(i+1)+' CONQUERED ⚡');
 }
 
 function markNextSession(){
   const next=sessions.cells.findIndex(v=>!v);
-  if(next===-1){showToast('All 24 sessions done! Beast.');return;}
+  if(next===-1){showToast('ALL 24 SESSIONS — ELITE SAIYAN!');return;}
   toggleSession(next);
 }
 
-// ---- PROGRAM ----
 function initProgram(){
   const tabs=document.getElementById('dayTabs');
-  tabs.innerHTML=DAYS_DATA.map((d,i)=>`<button class="day-tab${i===0?' active':''}" onclick="selectDay(${i},this)">${d.name}<br><span style="font-size:10px;font-weight:400;opacity:0.7">${d.day}</span></button>`).join('');
+  tabs.innerHTML=DAYS_DATA.map((d,i)=>`<button class="day-tab${i===0?' active':''}" onclick="selectDay(${i},this)">${d.name} · ${d.day}</button>`).join('');
   renderDay(0);
 }
 
@@ -533,23 +599,21 @@ function renderDay(i){
   const d=DAYS_DATA[i];
   let html=d.blocks.map(b=>`
     <div class="block-card">
-      <div class="block-header"><span class="block-name">${b.name}</span><span class="block-rest">${b.rest}</span></div>
+      <div class="block-header"><span class="block-name">${b.name.toUpperCase()}</span><span class="block-rest">${b.rest}</span></div>
       ${b.ex.map(e=>`<div class="ex-row"><span class="ex-name">${e[0]}</span><span class="ex-sets">${e[1]}</span></div>`).join('')}
     </div>`).join('');
-  html+=`<div class="rule-card mandatory" style="margin-top:4px"><div class="rule-header"><span class="rule-time">POST-LIFT</span> Incline walk</div><div class="rule-body">20 min · 15% incline · 2.5–3 mph. Every session. No skipping.</div></div>`;
+  html+=`<div class="cardio-reminder"><strong>POST-LIFT: INCLINE WALK</strong><br>20 min · 15% incline · 2.5–3 mph. Non-negotiable. Every single session.</div>`;
   document.getElementById('programContent').innerHTML=html;
 }
 
-// ---- CHECKLIST ----
 function renderChecklist(){
   document.getElementById('checkDate').textContent=todayFull();
   const key=todayKey();
   const saved=checkData[key]||{};
-  const list=document.getElementById('checkList');
-  list.innerHTML=CHECKLIST_ITEMS.map((item,i)=>{
+  document.getElementById('checkList').innerHTML=CHECKLIST_ITEMS.map((item,i)=>{
     const checked=!!saved[i];
     return `<div class="check-item${checked?' checked-item':''}" onclick="toggleCheck(${i})">
-      <div class="check-box${checked?' checked':''}">${checked?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
+      <div class="check-box${checked?' checked':''}">${checked?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>':''}</div>
       <span class="check-text">${item}</span>
     </div>`;
   }).join('');
@@ -573,13 +637,12 @@ function updateCheckProgress(){
   document.getElementById('checkCount').textContent=done+' / '+CHECKLIST_ITEMS.length;
   document.getElementById('checkPct').textContent=pct+'%';
   const msg=document.getElementById('checkMsg');
-  if(pct===100)msg.innerHTML='<span style="color:var(--green)">Perfect day. This is exactly what body recomp looks like. Repeat tomorrow.</span>';
-  else if(pct>=78)msg.innerHTML='<span style="color:#a0ffd1">Solid. Finish the last boxes — especially the 8pm cutoff.</span>';
-  else if(pct>=44)msg.innerHTML='<span style="color:var(--amber)">Halfway. Nutrition boxes are the priority right now.</span>';
-  else msg.innerHTML='Get moving. Meal timing is everything.';
+  if(pct===100)msg.innerHTML='<span style="color:var(--gold)">PERFECT DAY — SUPER SAIYAN LEVEL ACHIEVED! ⚡</span>';
+  else if(pct>=78)msg.innerHTML='<span style="color:var(--purple-light)">ALMOST THERE — FINISH THE MISSION!</span>';
+  else if(pct>=44)msg.innerHTML='<span style="color:var(--gold-dim)">HALF POWER — PUSH HARDER SAIYAN!</span>';
+  else msg.innerHTML='WEAK. GET MOVING.';
 }
 
-// ---- TOAST ----
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;
@@ -587,17 +650,15 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// ---- REMINDER CHECK ----
 function checkReminder(){
   const h=new Date().getHours();
   const key='reminded-'+todayKey();
   if(h>=21&&!load(key,false)){
     save(key,true);
-    setTimeout(()=>showToast('⏰ 9pm — Log your steps & calories!'),1000);
+    setTimeout(()=>showToast('⏰ LOG YOUR POWER — 9PM!'),1000);
   }
 }
 
-// ---- INIT ----
 initHome();
 initProgram();
 checkReminder();
